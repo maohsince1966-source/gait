@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>正常・異常歩行マスター</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-border: #bfdbfe;
+      --stance-bg: #eff6ff;
+      --stance-border: #93c5fd;
+      --stance-text: #1d4ed8;
+      --swing-bg: #ecfdf5;
+      --swing-border: #6ee7b7;
+      --swing-text: #047857;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --warning: #d97706;
+      --warning-light: #fef3c7;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 540px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ==========================================
+       ヘッダー
+       ========================================== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .header-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin: 0;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    .header-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .sound-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 7px 13px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text);
+      transition: background-color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .sound-btn:active {
+      background: #e2e8f0;
+    }
+
+    /* ==========================================
+       画面切り替え・共通パーツ
+       ========================================== */
+    .screen {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .section-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 15px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--muted);
+      margin: 0 0 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.28);
+      transition: transform 0.1s, background-color 0.15s, opacity 0.15s;
+    }
+
+    .primary-btn:active:not(:disabled) {
+      transform: scale(0.98);
+      background: var(--primary-dark);
+    }
+
+    .primary-btn:disabled {
+      background: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .weak-btn {
+      background: var(--warning-light);
+      color: var(--warning);
+      border: 2px solid var(--warning);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.1s;
+    }
+
+    .weak-btn:active {
+      transform: scale(0.98);
+    }
+
+    .secondary-btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .secondary-btn:active {
+      background: #f1f5f9;
+    }
+
+    /* ==========================================
+       スタート画面：3タブ切り替え
+       ========================================== */
+    .game-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      background: #e2e8f0;
+      padding: 5px;
+      border-radius: 14px;
+    }
+
+    .game-tab-btn {
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 4px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .game-tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    }
+
+    .game-tab-sub {
+      font-size: 0.64rem;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+
+    .tab-panel {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tab-panel.active {
+      display: flex;
+    }
+
+    /* 選択ボタン（難易度・モード） */
+    .mode-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .select-btn {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+
+    .select-btn.selected {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .select-btn .sub {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .select-btn.selected .sub {
+      color: var(--primary-dark);
+    }
+
+    .intro-box {
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      color: #1e3a8a;
+      line-height: 1.55;
+    }
+
+    .best-record {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ==========================================
+       共通ステータスバー
+       ========================================== */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .combo-badge { color: var(--warning); }
+    .miss-badge { color: var(--danger); }
+
+    /* ==========================================
+       タブ1：歩行8相 順番パズル プレイ画面
+       ========================================== */
+    .phase-group-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+
+    .phase-group-label.stance {
+      background: var(--stance-bg);
+      color: var(--stance-text);
+      border: 1px solid var(--stance-border);
+    }
+
+    .phase-group-label.swing {
+      background: var(--swing-bg);
+      color: var(--swing-text);
+      border: 1px solid var(--swing-border);
+      margin-top: 8px;
+    }
+
+    .slots-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slot-btn {
+      width: 100%;
+      min-height: 44px;
+      background: #f8fafc;
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+    }
+
+    .slot-btn.stance.filled {
+      background: var(--card);
+      border: 2px solid var(--primary);
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .slot-btn.swing.filled {
+      background: var(--card);
+      border: 2px solid #10b981;
+      box-shadow: 0 1px 3px rgba(16, 185, 129, 0.12);
+    }
+
+    .slot-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .slot-btn.stance .slot-num {
+      background: var(--stance-bg);
+      color: var(--stance-text);
+    }
+
+    .slot-btn.stance.filled .slot-num {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .slot-btn.swing .slot-num {
+      background: var(--swing-bg);
+      color: var(--swing-text);
+    }
+
+    .slot-btn.swing.filled .slot-num {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .slot-text-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      min-width: 0;
+      gap: 6px;
+    }
+
+    .slot-main-text {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #94a3b8;
+    }
+
+    .slot-btn.filled .slot-main-text {
+      color: var(--text);
+    }
+
+    .slot-hint-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .puzzle-feedback {
+      display: none;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .puzzle-feedback.error {
+      display: block;
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid #fca5a5;
+    }
+
+    .puzzle-feedback.success {
+      display: block;
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid #86efac;
+    }
+
+    .choices-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .reset-link-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .puzzle-choices-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .puzzle-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 8px;
+      min-height: 54px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .puzzle-card:active:not(:disabled) {
+      transform: scale(0.97);
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .puzzle-card:disabled {
+      background: #f1f5f9;
+      border-color: #e2e8f0;
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .puzzle-card-name {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .puzzle-card-hint {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* ==========================================
+       タブ2・3：スピード・マッチング プレイ画面
+       ========================================== */
+    .board {
+      display: grid;
+      grid-template-columns: 1fr 1.28fr;
+      gap: 10px;
+      flex: 1;
+      align-content: start;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .col-header {
+      font-size: 0.74rem;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 9px;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.84rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.1s, background-color 0.15s, border-color 0.15s, opacity 0.25s;
+      user-select: none;
+      word-break: break-word;
+      line-height: 1.3;
+    }
+
+    .card.answer-card {
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .card.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+      transform: scale(1.02);
+    }
+
+    .card.correct {
+      border-color: var(--success);
+      background: var(--success-light);
+      color: var(--success);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card.wrong {
+      border-color: var(--danger);
+      background: var(--danger-light);
+      color: var(--danger);
+      animation: shake 0.35s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    .shake {
+      animation: shake 0.38s ease-in-out;
+    }
+
+    .hint-toast {
+      min-height: 60px;
+      background: var(--danger-light);
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.79rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      line-height: 1.42;
+    }
+
+    .hint-toast.show {
+      opacity: 1;
+    }
+
+    /* ==========================================
+       共通リザルト画面
+       ========================================== */
+    .result-hero {
+      text-align: center;
+      padding: 18px 16px;
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+    }
+
+    .new-record-badge {
+      display: inline-block;
+      background: var(--warning-light);
+      color: var(--warning);
+      border: 1px solid #fcd34d;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 3px 11px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+    }
+
+    .rank-badge {
+      display: inline-block;
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 1.05;
+      margin: 4px 0;
+    }
+
+    .rank-badge.S { color: #d97706; }
+    .rank-badge.A { color: #2563eb; }
+    .rank-badge.B { color: #16a34a; }
+
+    .stats-row {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .stats-row strong {
+      display: block;
+      font-size: 1.02rem;
+      color: var(--text);
+      margin-top: 2px;
+    }
+
+    .topic-box {
+      background: var(--primary-light);
+      border: 2px dashed var(--primary);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .topic-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .topic-target {
+      font-size: 1.06rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .toggle-answer-btn {
+      background: #ffffff;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .topic-answer {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--primary-border);
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+
+    .topic-answer.open {
+      display: block;
+    }
+
+    /* 復習リスト & 8相まとめ表 */
+    .review-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 10px 0;
+      font-size: 0.81rem;
+    }
+
+    .review-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .review-name {
+      font-weight: 800;
+      font-size: 0.92rem;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .review-name.danger { color: var(--danger); }
+
+    .mini-tag {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+
+    .mini-tag.stance { background: var(--stance-bg); color: var(--stance-text); }
+    .mini-tag.swing { background: var(--swing-bg); color: var(--swing-text); }
+
+    .perfect-box {
+      background: var(--success-light);
+      border: 1px solid #86efac;
+      color: #166534;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 共通ヘッダー -->
+    <header>
+      <div class="header-title-wrap">
+        <h1>正常・異常歩行マスター</h1>
+        <span class="header-sub">OT 1・2年次 運動学・評価学（8相＋10用語＋11異常歩行）</span>
+      </div>
+      <button id="soundToggle" class="sound-btn" type="button">🔊 音 ON</button>
+    </header>
+
+    <!-- ==========================================
+         1. スタート画面
+         ========================================== -->
+    <section id="startScreen" class="screen active">
+      <!-- 3モード切り替えタブ -->
+      <div class="game-tabs">
+        <button id="tabPuzzleBtn" class="game-tab-btn active" type="button">
+          <span>🔄 8相パズル</span>
+          <span class="game-tab-sub">順番並び替え</span>
+        </button>
+        <button id="tabNormalBtn" class="game-tab-btn" type="button">
+          <span>⚡ 正常歩行</span>
+          <span class="game-tab-sub">筋活動・用語</span>
+        </button>
+        <button id="tabAbnormalBtn" class="game-tab-btn" type="button">
+          <span>🏥 異常歩行</span>
+          <span class="game-tab-sub">原因・特徴11種</span>
+        </button>
+      </div>
+
+      <!-- タブ1パネル：歩行8相 順番パズル -->
+      <div id="panelPuzzle" class="tab-panel active">
+        <div class="section-card">
+          <p class="section-title">難易度を選ぶ</p>
+          <div class="mode-list">
+            <button class="select-btn puzzle-diff-btn selected" type="button" data-diff="easy">
+              <span><strong>初級</strong>（ヒントあり）</span>
+              <span class="sub">旧用語・立脚/遊脚つき</span>
+            </button>
+            <button class="select-btn puzzle-diff-btn" type="button" data-diff="hard">
+              <span><strong>上級</strong>（名称のみ）</span>
+              <span class="sub">国試本番レベル</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="intro-box">
+          ランチョ・ロス・アミーゴ方式の<strong>正常歩行8相</strong>を、初期接地（1）から遊脚終期（8）まで順番に並べるパズルです。<br>
+          <strong>1〜5が立脚期（60%）、6〜8が遊脚期（40%）</strong>になります。間違えると最初からやり直し！
+        </div>
+
+        <button id="startPuzzleBtn" class="primary-btn" type="button">8相パズルをスタート！</button>
+        <div id="puzzleBestRecord" class="best-record"></div>
+      </div>
+
+      <!-- タブ2パネル：正常歩行 スピード・マッチング -->
+      <div id="panelNormal" class="tab-panel">
+        <div class="section-card">
+          <p class="section-title">モードを選ぶ</p>
+          <div class="mode-list">
+            <button class="select-btn normal-mode-btn selected" type="button" data-mode="phases">
+              <span><strong>初級</strong>：各相 ↔ 主動作筋・収縮様式</span>
+              <span class="sub">全8相</span>
+            </button>
+            <button class="select-btn normal-mode-btn" type="button" data-mode="keywords">
+              <span><strong>中級</strong>：歩行キーワード ↔ 意味・基準値</span>
+              <span class="sub">全10問</span>
+            </button>
+          </div>
+        </div>
+
+        <button id="startNormalBtn" class="primary-btn" type="button">スタート！</button>
+        <button id="weakNormalBtn" class="weak-btn" type="button" style="display:none;">
+          🔥 弱点だけ復習（<span id="weakNormalCount">0</span>問）
+        </button>
+        <div id="normalBestRecord" class="best-record"></div>
+      </div>
+
+      <!-- タブ3パネル：異常歩行 スピード・マッチング -->
+      <div id="panelAbnormal" class="tab-panel">
+        <div class="section-card">
+          <p class="section-title">モードを選ぶ（間欠性跛行を含む全11種）</p>
+          <div class="mode-list">
+            <button class="select-btn abnormal-mode-btn selected" type="button" data-mode="cause">
+              <span><strong>初級</strong>：異常歩行 ↔ 主な原因・疾患</span>
+              <span class="sub">全11種</span>
+            </button>
+            <button class="select-btn abnormal-mode-btn" type="button" data-mode="feature">
+              <span><strong>中級</strong>：異常歩行 ↔ 特徴・歩行パターン</span>
+              <span class="sub">全11種</span>
+            </button>
+          </div>
+        </div>
+
+        <button id="startAbnormalBtn" class="primary-btn" type="button">スタート！</button>
+        <button id="weakAbnormalBtn" class="weak-btn" type="button" style="display:none;">
+          🔥 弱点だけ復習（<span id="weakAbnormalCount">0</span>種）
+        </button>
+        <div id="abnormalBestRecord" class="best-record"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         2. プレイ画面（タブ1：歩行8相 順番パズル）
+         ========================================== -->
+    <section id="puzzlePlayScreen" class="screen">
+      <div class="status-bar">
+        <span>⏱ <span id="puzzleTimer">0.0</span>秒</span>
+        <span id="puzzleDiffLabel" style="font-size:0.78rem; color:var(--muted);">初級（ヒントあり）</span>
+        <span class="miss-badge">ミス <span id="puzzleMiss">0</span>回</span>
+      </div>
+
+      <!-- 1〜8スロット -->
+      <div id="puzzleSlotsContainer" class="section-card" style="padding: 12px;">
+        <div class="phase-group-label stance">
+          <span>🟦 立脚期（Stance Phase）</span>
+          <span>60%（1〜5）</span>
+        </div>
+        <div id="stanceSlots" class="slots-list"></div>
+
+        <div class="phase-group-label swing">
+          <span>🟩 遊脚期（Swing Phase）</span>
+          <span>40%（6〜8）</span>
+        </div>
+        <div id="swingSlots" class="slots-list"></div>
+      </div>
+
+      <!-- 判定フィードバック -->
+      <div id="puzzleFeedback" class="puzzle-feedback"></div>
+
+      <!-- シャッフルされた8枚の選択肢 -->
+      <div class="section-card" style="padding: 12px;">
+        <div class="choices-header">
+          <span class="section-title" style="margin:0;">選択肢カード（順番にタップ）</span>
+          <button id="resetPuzzleBtn" class="reset-link-btn" type="button">↺ リセット</button>
+        </div>
+        <div id="puzzleChoicesGrid" class="puzzle-choices-grid"></div>
+      </div>
+
+      <button id="submitPuzzleBtn" class="primary-btn" type="button" disabled>完成！判定する（あと8つ）</button>
+      <button id="quitPuzzleBtn" class="secondary-btn" type="button">タイトルに戻る</button>
+    </section>
+
+    <!-- ==========================================
+         3. プレイ画面（タブ2・3共通：スピード・マッチング）
+         ========================================== -->
+    <section id="matchPlayScreen" class="screen">
+      <div class="status-bar">
+        <span>⏱ <span id="matchTimer">0.0</span>秒</span>
+        <span>残り <span id="matchRemaining">0</span>ペア</span>
+        <span class="combo-badge">🔥 <span id="matchCombo">0</span>連続</span>
+      </div>
+
+      <div class="board">
+        <div class="column">
+          <div id="leftColHeader" class="col-header">項目</div>
+          <div id="leftCol" class="column"></div>
+        </div>
+        <div class="column">
+          <div id="rightColHeader" class="col-header">答え</div>
+          <div id="rightCol" class="column"></div>
+        </div>
+      </div>
+
+      <div id="hintToast" class="hint-toast"></div>
+      <button id="quitMatchBtn" class="secondary-btn" type="button">タイトルに戻る</button>
+    </section>
+
+    <!-- ==========================================
+         4. 共通リザルト画面
+         ========================================== -->
+    <section id="resultScreen" class="screen">
+      <div class="result-hero">
+        <div id="newRecordBadge" class="new-record-badge" style="display:none;">🎉 ベストタイム更新！</div>
+        <div style="font-size:0.82rem; font-weight:700; color:var(--muted);">クリアランク</div>
+        <div id="rankBadge" class="rank-badge S">S</div>
+        <div id="resultSub" style="font-size:0.86rem; font-weight:800;"></div>
+        <div class="stats-row">
+          <div>クリアタイム<strong id="finalTime">0.0秒</strong></div>
+          <div>ミス回数<strong id="finalMiss">0回</strong></div>
+          <div><span id="finalThirdLabel">最大連続</span><strong id="finalThirdValue">0回</strong></div>
+        </div>
+      </div>
+
+      <!-- グループ学習「実演・解説お題」 -->
+      <div class="topic-box">
+        <div class="topic-label">👥 グループ学習「実演・解説お題」</div>
+        <div id="topicTarget" class="topic-target"></div>
+        <div id="topicInstruction" style="font-size:0.82rem;"></div>
+        <button id="toggleTopicAnswer" class="toggle-answer-btn" type="button">解答・ヒントを見る</button>
+        <div id="topicAnswer" class="topic-answer"></div>
+      </div>
+
+      <!-- 復習リスト（8相まとめ表 または ミス復習リスト） -->
+      <div id="reviewSection" class="section-card">
+        <p id="reviewSectionTitle" class="section-title">復習リスト</p>
+        <div id="reviewList"></div>
+      </div>
+
+      <button id="retryBtn" class="primary-btn" type="button">もう一度チャレンジ</button>
+      <button id="backHomeBtn" class="secondary-btn" type="button">タイトルに戻る</button>
+    </section>
+  </div>
+
+  <script>
+    /**
+     * =========================================================================
+     * 1. マスターデータ
+     * =========================================================================
+     */
+
+    // 正常歩行 8相データ（ランチョ・ロス・アミーゴ方式）
+    const GAIT_PHASES = [
+      {
+        id: "gp1",
+        order: 1,
+        name: "初期接地（IC）",
+        period: "立脚期",
+        ratio: "0〜2%",
+        oldTerm: "踵接地",
+        muscleAction: "大殿筋・前脛骨筋・ハムストリングスが活動（踵接地）",
+        feature: "踵が地面につく瞬間。大殿筋・前脛骨筋・ハムストリングスが活動。"
+      },
+      {
+        id: "gp2",
+        order: 2,
+        name: "荷重応答期（LR）",
+        period: "立脚期",
+        ratio: "0〜12%",
+        oldTerm: "足底接地",
+        muscleAction: "前脛骨筋（遠心性）で足底落下防止・大腿四頭筋（遠心性）で膝折れ防止",
+        feature: "衝撃吸収期。前脛骨筋（遠心性）で足底落下を防ぎ、大腿四頭筋（遠心性）で膝折れを防ぐ。"
+      },
+      {
+        id: "gp3",
+        order: 3,
+        name: "立脚中期（MSt）",
+        period: "立脚期",
+        ratio: "12〜31%",
+        oldTerm: "立脚中期",
+        muscleAction: "中殿筋（骨盤の水平保持）・下腿三頭筋（遠心性で下腿前傾を制御）",
+        feature: "単脚支持の前半。中殿筋が骨盤を水平に保持。重心は最も高く、側方へ最大移動。下腿三頭筋が遠心性収縮で下腿の前傾を制御。"
+      },
+      {
+        id: "gp4",
+        order: 4,
+        name: "立脚終期（TSt）",
+        period: "立脚期",
+        ratio: "31〜50%",
+        oldTerm: "踵離地",
+        muscleAction: "下腿三頭筋（求心性収縮／プッシュオフで強い推進力）",
+        feature: "単脚支持の後半。踵が離れ、下腿三頭筋の求心性収縮（プッシュオフ）で強い推進力を生む。"
+      },
+      {
+        id: "gp5",
+        order: 5,
+        name: "前遊脚期（PSw）",
+        period: "立脚期",
+        ratio: "50〜62%",
+        oldTerm: "つま先離地",
+        muscleAction: "腸腰筋・大腿直筋（股関節屈筋が振り出しの準備）",
+        feature: "両脚支持期（第2）。股関節屈筋（腸腰筋・大腿直筋）が働き、下肢を前に振り出す準備をする。"
+      },
+      {
+        id: "gp6",
+        order: 6,
+        name: "遊脚初期（ISw）",
+        period: "遊脚期",
+        ratio: "62〜75%",
+        oldTerm: "加速期",
+        muscleAction: "腸腰筋（股屈曲）・前脛骨筋（足背屈でクリアランス確保）",
+        feature: "つま先が床から離れる。腸腰筋で股屈曲、膝は約60°屈曲し、前脛骨筋で足背屈して床とのクリアランスを確保。"
+      },
+      {
+        id: "gp7",
+        order: 7,
+        name: "遊脚中期（MSw）",
+        period: "遊脚期",
+        ratio: "75〜87%",
+        oldTerm: "遊脚中期",
+        muscleAction: "前脛骨筋（足関節中間位を保ち、つま先の引っかかり防止）",
+        feature: "下腿が床と垂直になる。前脛骨筋の活動で足関節中間位を保ち、つま先の引っかかりを防ぐ。"
+      },
+      {
+        id: "gp8",
+        order: 8,
+        name: "遊脚終期（TSw）",
+        period: "遊脚期",
+        ratio: "87〜100%",
+        oldTerm: "減速期",
+        muscleAction: "大腿四頭筋（膝伸展）・ハムストリングス（遠心性で振り出しにブレーキ）",
+        feature: "次の接地への準備。大腿四頭筋で膝を伸展させつつ、ハムストリングスが遠心性収縮で下腿の振り出しにブレーキをかける。"
+      }
+    ];
+
+    // 正常歩行 キーワード（全10問）
+    const GAIT_KEYWORDS = [
+      {
+        id: "gk01",
+        term: "歩幅（ステップ長）",
+        meaning: "一方の踵接地から対側の踵接地までの距離",
+        hint: "重複歩距離の約半分。片麻痺では非対称になりやすい。"
+      },
+      {
+        id: "gk02",
+        term: "重複歩距離（ストライド長）",
+        meaning: "一方の踵接地から同側の次の踵接地までの距離",
+        hint: "左＋右の2歩分（1歩行周期で進む距離）。"
+      },
+      {
+        id: "gk03",
+        term: "歩隔（ステップ幅）",
+        meaning: "左右の踵の中心線間の横幅（正常：約5〜10cm）",
+        hint: "小脳性運動失調や高齢者では安定性を得るため広くなる（ワイドベース）。"
+      },
+      {
+        id: "gk04",
+        term: "歩行率（ケイデンス）",
+        meaning: "1分間あたりの歩数（正常：約100〜120歩/分）",
+        hint: "歩行速度＝歩幅×歩行率で決まる。"
+      },
+      {
+        id: "gk05",
+        term: "立脚期と遊脚期の比率",
+        meaning: "立脚期 60% ： 遊脚期 40%",
+        hint: "歩行速度が上がると立脚期が短くなり、走ると両脚支持期が消失する。"
+      },
+      {
+        id: "gk06",
+        term: "両脚支持期",
+        meaning: "1歩行周期に2回出現（合計約20%）",
+        hint: "荷重応答期（0〜12%）と前遊脚期（50〜62%）の2回。"
+      },
+      {
+        id: "gk07",
+        term: "重心の上下移動",
+        meaning: "約5cm（立脚中期で最高、両脚支持期で最低）",
+        hint: "サインカーブを描き、上下動を小さくしてエネルギー消費を抑える。"
+      },
+      {
+        id: "gk08",
+        term: "重心の左右移動",
+        meaning: "約4〜5cm（立脚中期に支持脚側へ最大移動）",
+        hint: "中殿筋の働きで過度な側方移動（トレンデレンブルグ）を防ぐ。"
+      },
+      {
+        id: "gk09",
+        term: "ヒールロッカー",
+        meaning: "初期接地〜荷重応答期（踵を軸に足部が回転）",
+        hint: "前脛骨筋の遠心性収縮で衝撃を吸収しながら前方へ運ぶ。"
+      },
+      {
+        id: "gk10",
+        term: "アンクルロッカー",
+        meaning: "立脚中期（足関節を軸に下腿が前方へ傾く）",
+        hint: "下腿三頭筋の遠心性収縮で下腿の前傾速度をコントロールする。"
+      }
+    ];
+
+    // 異常歩行（間欠性跛行を含む全11種）
+    const ABNORMAL_GAITS = [
+      {
+        id: "ag01",
+        name: "鶏歩（けいほ）",
+        cause: "前脛骨筋麻痺（深腓骨神経麻痺）",
+        feature: "つま先が垂れるため、膝を高く上げて歩く",
+        hint: "下垂足（ドロップフット）を代償して、鶏のように足を大きく持ち上げる！"
+      },
+      {
+        id: "ag02",
+        name: "トレンデレンブルグ歩行",
+        cause: "中殿筋の筋力低下（上殿神経麻痺など）",
+        feature: "立脚期に「遊脚側（健側）の骨盤」が下に傾く",
+        hint: "片脚立ちで骨盤を水平に保てない。体幹を患側に傾けて代償するのは「デュシェンヌ歩行」。"
+      },
+      {
+        id: "ag03",
+        name: "分回し歩行",
+        cause: "脳卒中片麻痺（下肢の伸展共同運動）",
+        feature: "膝を伸ばしたまま、下肢を外側から大きく回して振り出す",
+        hint: "下肢伸展痙縮で膝が曲がらず足が長くなるため、外へぶん回して床との擦れを防ぐ。"
+      },
+      {
+        id: "ag04",
+        name: "小刻み・すくみ足歩行",
+        cause: "パーキンソン病（大脳基底核障害）",
+        feature: "前傾姿勢・腕振り減少・一歩目が出にくい・加速歩行",
+        hint: "体幹前傾で重心が前にずれるため、倒れないよう小刻みに早足（突進現象）になる。"
+      },
+      {
+        id: "ag05",
+        name: "酩酊歩行（失調性歩行）",
+        cause: "小脳性運動失調",
+        feature: "両足を広く開く（ワイドベース）、酔っ払いのようにふらつく",
+        hint: "歩隔を広くしてバランスを取る。視覚で代償しにくいため、開眼でも閉眼でもふらつく。"
+      },
+      {
+        id: "ag06",
+        name: "踵打ち歩行",
+        cause: "脊髄後索障害（深部感覚障害）",
+        feature: "足元を見ながら、踵を床に強く叩きつけるように歩く",
+        hint: "足の裏の感覚や位置覚がわからないため、視覚と音で接地を確認する（ロンベルグ徴候陽性）。"
+      },
+      {
+        id: "ag07",
+        name: "大殿筋歩行",
+        cause: "大殿筋麻痺（下殿神経麻痺）",
+        feature: "患側の立脚期に体幹を大きく後方へ反らす",
+        hint: "股関節伸展力が弱いため、重心を股関節の後方へ移して体幹の前倒れを防ぐ。"
+      },
+      {
+        id: "ag08",
+        name: "動揺性歩行（アヒル歩行）",
+        cause: "両側中殿筋の筋力低下（筋ジストロフィー等）",
+        feature: "左右交互に体を大きく揺らしながら歩く",
+        hint: "両側のトレンデレンブルグ徴候が起こるため、アヒルのように左右へ揺れる。"
+      },
+      {
+        id: "ag09",
+        name: "はさみ脚歩行",
+        cause: "脳性麻痺（痙直型両麻痺・股内転筋痙縮）",
+        feature: "両膝が擦れ合い、両脚が交差するように歩く",
+        hint: "股関節内転筋の強い痙縮により、振り出す足が反対側の前に交差してしまう。"
+      },
+      {
+        id: "ag10",
+        name: "疼痛性跛行",
+        cause: "変形性股・膝関節症などの疼痛",
+        feature: "痛みのある側（患側）の立脚期を極端に短くして歩く",
+        hint: "痛い足に体重をかける時間を減らすため、すぐに健側へ足を移す。"
+      },
+      {
+        id: "ag11",
+        name: "間欠性跛行",
+        cause: "腰部脊柱管狭窄症（神経性）／閉塞性動脈硬化症（血管性）",
+        feature: "一定距離歩くと下肢の痛み・しびれで歩けなくなり、休むと再び歩ける",
+        hint: "国試超頻出！『前かがみ（自転車OK）』で楽になるのが神経性、『立ち止まるだけ』で楽になるのが血管性！"
+      }
+    ];
+
+    /**
+     * =========================================================================
+     * 2. ストレージ・サウンド・ユーティリティ
+     * =========================================================================
+     */
+    const STORAGE_KEYS = {
+      BEST: "ot_gait_master_best_v1",
+      WEAK_NORMAL_PHASES: "ot_gait_weak_normal_phases_v1",
+      WEAK_NORMAL_KEYWORDS: "ot_gait_weak_normal_keywords_v1",
+      WEAK_ABNORMAL: "ot_gait_weak_abnormal_v1"
+    };
+
+    let soundOn = true;
+    let audioCtx = null;
+
+    function playSound(type) {
+      if (!soundOn) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        const now = audioCtx.currentTime;
+        const tone = (freq, dur, wave, vol, delay = 0) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = wave;
+          osc.frequency.setValueAtTime(freq, now + delay);
+          gain.gain.setValueAtTime(vol, now + delay);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + delay);
+          osc.stop(now + delay + dur);
+        };
+
+        if (type === "tap") {
+          tone(540, 0.05, "sine", 0.06);
+        } else if (type === "ok") {
+          tone(659.25, 0.1, "sine", 0.12, 0);
+          tone(880.0, 0.18, "sine", 0.13, 0.07);
+        } else if (type === "ng") {
+          tone(210, 0.16, "sawtooth", 0.1, 0);
+          tone(165, 0.2, "sawtooth", 0.1, 0.09);
+        } else if (type === "clear") {
+          tone(523.25, 0.11, "sine", 0.12, 0);
+          tone(659.25, 0.11, "sine", 0.12, 0.09);
+          tone(783.99, 0.11, "sine", 0.12, 0.18);
+          tone(1046.5, 0.34, "sine", 0.14, 0.27);
+        }
+      } catch (e) {}
+    }
+
+    function getWeakList(storageKey) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveWeakList(storageKey, ids) {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify([...new Set(ids)]));
+      } catch (e) {}
+    }
+
+    function addWeakItem(storageKey, id) {
+      const list = getWeakList(storageKey);
+      if (!list.includes(id)) {
+        list.push(id);
+        saveWeakList(storageKey, list);
+      }
+    }
+
+    function removeWeakItem(storageKey, id) {
+      saveWeakList(storageKey, getWeakList(storageKey).filter(x => x !== id));
+    }
+
+    function getBestTimes() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEYS.BEST) || "{}");
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function updateBestTime(key, sec) {
+      const data = getBestTimes();
+      const prev = data[key];
+      if (typeof prev !== "number" || sec < prev) {
+        data[key] = sec;
+        try {
+          localStorage.setItem(STORAGE_KEYS.BEST, JSON.stringify(data));
+        } catch (e) {}
+        return true;
+      }
+      return false;
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    /**
+     * =========================================================================
+     * 3. アプリ状態管理
+     * =========================================================================
+     */
+    let activeTab = "puzzle";       // "puzzle" | "normal" | "abnormal"
+    let puzzleDiff = "easy";        // "easy" | "hard"
+    let normalMode = "phases";      // "phases" | "keywords"
+    let abnormalMode = "cause";     // "cause" | "feature"
+    let lastSessionConfig = null;   // リトライ用設定
+
+    // 共通タイマー
+    let timerInterval = null;
+    let startTime = 0;
+    let elapsedSec = 0;
+
+    // 8相パズル状態
+    let puzzleState = {
+      choices: [], // { id, phase, used }
+      slots: Array(8).fill(null), // choiceId or null
+      missCount: 0,
+      isLocked: false
+    };
+
+    // スピード・マッチング共通状態（正常歩行・異常歩行で共用）
+    let matchState = {
+      category: "normal",   // "normal" | "abnormal"
+      subMode: "phases",    // "phases" | "keywords" | "cause" | "feature"
+      weakStorageKey: "",
+      bestTimeKey: "",
+      isWeakMode: false,
+      playedItems: [],      // 標準化アイテム配列 { id, left, right, hint, fullData }
+      queue: [],
+      currentBatch: [],
+      selectedLeft: null,
+      selectedRight: null,
+      matchedInBatch: 0,
+      missCount: 0,
+      combo: 0,
+      maxCombo: 0,
+      missedSet: new Set(),
+      hintTimer: null
+    };
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 4. スタート画面描画
+     * =========================================================================
+     */
+    function renderStartScreen() {
+      // タブ表示
+      document.getElementById("tabPuzzleBtn").classList.toggle("active", activeTab === "puzzle");
+      document.getElementById("tabNormalBtn").classList.toggle("active", activeTab === "normal");
+      document.getElementById("tabAbnormalBtn").classList.toggle("active", activeTab === "abnormal");
+
+      document.getElementById("panelPuzzle").classList.toggle("active", activeTab === "puzzle");
+      document.getElementById("panelNormal").classList.toggle("active", activeTab === "normal");
+      document.getElementById("panelAbnormal").classList.toggle("active", activeTab === "abnormal");
+
+      const bests = getBestTimes();
+
+      // タブ1：8相パズル ベストタイム
+      const pBest = bests[`puzzle_${puzzleDiff}`];
+      document.getElementById("puzzleBestRecord").textContent =
+        typeof pBest === "number"
+          ? `この難易度のベストタイム：${pBest.toFixed(1)}秒`
+          : "まだクリア記録がありません";
+
+      // タブ2：正常歩行 弱点＆ベストタイム
+      const normalWeakKey = normalMode === "phases"
+        ? STORAGE_KEYS.WEAK_NORMAL_PHASES
+        : STORAGE_KEYS.WEAK_NORMAL_KEYWORDS;
+      const normalValidIds = normalMode === "phases"
+        ? GAIT_PHASES.map(x => x.id)
+        : GAIT_KEYWORDS.map(x => x.id);
+      const normalWeakIds = getWeakList(normalWeakKey).filter(id => normalValidIds.includes(id));
+
+      const weakNormalBtn = document.getElementById("weakNormalBtn");
+      if (normalWeakIds.length > 0) {
+        weakNormalBtn.style.display = "block";
+        document.getElementById("weakNormalCount").textContent = String(normalWeakIds.length);
+      } else {
+        weakNormalBtn.style.display = "none";
+      }
+
+      const nBest = bests[`normal_${normalMode}`];
+      document.getElementById("normalBestRecord").textContent =
+        typeof nBest === "number"
+          ? `このモードのベストタイム：${nBest.toFixed(1)}秒`
+          : "まだクリア記録がありません";
+
+      // タブ3：異常歩行 弱点＆ベストタイム
+      const abnormalValidIds = ABNORMAL_GAITS.map(x => x.id);
+      const abnormalWeakIds = getWeakList(STORAGE_KEYS.WEAK_ABNORMAL).filter(id => abnormalValidIds.includes(id));
+
+      const weakAbnormalBtn = document.getElementById("weakAbnormalBtn");
+      if (abnormalWeakIds.length > 0) {
+        weakAbnormalBtn.style.display = "block";
+        document.getElementById("weakAbnormalCount").textContent = String(abnormalWeakIds.length);
+      } else {
+        weakAbnormalBtn.style.display = "none";
+      }
+
+      const aBest = bests[`abnormal_${abnormalMode}`];
+      document.getElementById("abnormalBestRecord").textContent =
+        typeof aBest === "number"
+          ? `このモードのベストタイム：${aBest.toFixed(1)}秒`
+          : "まだクリア記録がありません";
+    }
+
+    /**
+     * =========================================================================
+     * 5. タブ1：歩行8相 順番パズル
+     * =========================================================================
+     */
+    function startPuzzleGame() {
+      playSound("tap");
+      lastSessionConfig = { type: "puzzle", diff: puzzleDiff };
+
+      puzzleState = {
+        choices: shuffle(GAIT_PHASES).map((phase, idx) => ({
+          id: idx,
+          phase,
+          used: false
+        })),
+        slots: Array(8).fill(null),
+        missCount: 0,
+        isLocked: false
+      };
+
+      document.getElementById("puzzleDiffLabel").textContent =
+        puzzleDiff === "easy" ? "初級（ヒントあり）" : "上級（名称のみ）";
+      document.getElementById("puzzleMiss").textContent = "0";
+      hidePuzzleFeedback();
+
+      renderPuzzleBoard();
+      showScreen("puzzlePlayScreen");
+
+      stopTimer();
+      startTime = performance.now();
+      elapsedSec = 0;
+      document.getElementById("puzzleTimer").textContent = "0.0";
+      timerInterval = setInterval(() => {
+        elapsedSec = (performance.now() - startTime) / 1000;
+        document.getElementById("puzzleTimer").textContent = elapsedSec.toFixed(1);
+      }, 100);
+    }
+
+    function renderPuzzleBoard() {
+      const stanceWrap = document.getElementById("stanceSlots");
+      const swingWrap = document.getElementById("swingSlots");
+      stanceWrap.innerHTML = "";
+      swingWrap.innerHTML = "";
+
+      for (let i = 0; i < 8; i++) {
+        const isStance = i < 5;
+        const choiceId = puzzleState.slots[i];
+        const choiceObj = choiceId !== null ? puzzleState.choices.find(c => c.id === choiceId) : null;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `slot-btn ${isStance ? "stance" : "swing"}${choiceObj ? " filled" : ""}`;
+
+        const hintHtml = choiceObj && puzzleDiff === "easy"
+          ? `<span class="slot-hint-badge">${choiceObj.phase.oldTerm}</span>`
+          : "";
+
+        btn.innerHTML = `
+          <span class="slot-num">${i + 1}</span>
+          <div class="slot-text-wrap">
+            <span class="slot-main-text">${choiceObj ? choiceObj.phase.name : "タップして配置..."}</span>
+            ${hintHtml}
+          </div>
+        `;
+
+        btn.onclick = () => {
+          if (puzzleState.isLocked || choiceId === null) return;
+          playSound("tap");
+          const c = puzzleState.choices.find(item => item.id === choiceId);
+          if (c) c.used = false;
+          puzzleState.slots[i] = null;
+          hidePuzzleFeedback();
+          renderPuzzleBoard();
+        };
+
+        if (isStance) {
+          stanceWrap.appendChild(btn);
+        } else {
+          swingWrap.appendChild(btn);
+        }
+      }
+
+      // 選択肢カード描画
+      const grid = document.getElementById("puzzleChoicesGrid");
+      grid.innerHTML = "";
+      puzzleState.choices.forEach(c => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "puzzle-card";
+        btn.disabled = c.used;
+        btn.innerHTML = `
+          <span class="puzzle-card-name">${c.phase.name}</span>
+          ${puzzleDiff === "easy" ? `<span class="puzzle-card-hint">${c.phase.period}・${c.phase.oldTerm}</span>` : ""}
+        `;
+        btn.onclick = () => {
+          if (puzzleState.isLocked || c.used) return;
+          const emptyIdx = puzzleState.slots.findIndex(s => s === null);
+          if (emptyIdx === -1) return;
+          playSound("tap");
+          puzzleState.slots[emptyIdx] = c.id;
+          c.used = true;
+          hidePuzzleFeedback();
+          renderPuzzleBoard();
+        };
+        grid.appendChild(btn);
+      });
+
+      // 判定ボタン状態
+      const emptyCount = puzzleState.slots.filter(s => s === null).length;
+      const submitBtn = document.getElementById("submitPuzzleBtn");
+      if (emptyCount === 0) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "完成！判定する";
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.textContent = `完成！判定する（あと${emptyCount}つ）`;
+      }
+    }
+
+    function showPuzzleFeedback(type, msg) {
+      const el = document.getElementById("puzzleFeedback");
+      el.className = `puzzle-feedback ${type}`;
+      el.textContent = msg;
+    }
+
+    function hidePuzzleFeedback() {
+      const el = document.getElementById("puzzleFeedback");
+      el.className = "puzzle-feedback";
+      el.textContent = "";
+    }
+
+    function resetPuzzleSlots() {
+      puzzleState.slots = Array(8).fill(null);
+      puzzleState.choices.forEach(c => (c.used = false));
+      renderPuzzleBoard();
+    }
+
+    function checkPuzzleAnswer() {
+      if (puzzleState.isLocked) return;
+
+      let allCorrect = true;
+      for (let i = 0; i < 8; i++) {
+        const c = puzzleState.choices.find(item => item.id === puzzleState.slots[i]);
+        if (!c || c.phase.order !== i + 1) {
+          allCorrect = false;
+          break;
+        }
+      }
+
+      if (allCorrect) {
+        puzzleState.isLocked = true;
+        stopTimer();
+        elapsedSec = (performance.now() - startTime) / 1000;
+        playSound("clear");
+        showPuzzleFeedback("success", "🎉 正解！正常歩行8相を完璧に並べ替えました！");
+
+        setTimeout(() => {
+          finishPuzzleGame();
+        }, 650);
+      } else {
+        puzzleState.isLocked = true;
+        puzzleState.missCount++;
+        document.getElementById("puzzleMiss").textContent = String(puzzleState.missCount);
+        playSound("ng");
+        showPuzzleFeedback("error", "❌ 不正解！順番を見直してやり直そう");
+
+        const box = document.getElementById("puzzleSlotsContainer");
+        box.classList.remove("shake");
+        void box.offsetWidth;
+        box.classList.add("shake");
+
+        setTimeout(() => {
+          resetPuzzleSlots();
+          hidePuzzleFeedback();
+          puzzleState.isLocked = false;
+        }, 1200);
+      }
+    }
+
+    function finishPuzzleGame() {
+      const isNewRecord = updateBestTime(`puzzle_${puzzleDiff}`, elapsedSec);
+
+      // タイム・ミス回数によるS/A/Bランク判定
+      let rank = "B";
+      let subText = "粘り強くクリア！全8相の流れを確認してタイム短縮を目指そう！";
+      if (puzzleState.missCount === 0 && elapsedSec < 25.0) {
+        rank = "S";
+        subText = "神速＆パーフェクト！8相の順番が完全に頭に入っています！";
+      } else if (puzzleState.missCount <= 1 && elapsedSec < 45.0) {
+        rank = "A";
+        subText = "素晴らしい！しっかり歩行周期の流れがつかめています！";
+      }
+
+      // グループ学習お題（8相からランダム）
+      const topic = GAIT_PHASES[Math.floor(Math.random() * GAIT_PHASES.length)];
+
+      renderResultScreen({
+        rank,
+        subText,
+        timeSec: elapsedSec,
+        misses: puzzleState.missCount,
+        isNewRecord,
+        thirdLabel: "難易度",
+        thirdValue: puzzleDiff === "easy" ? "初級" : "上級",
+        topicTitle: `お題：${topic.order}. ${topic.name}`,
+        topicInstruction: "この相の動きと主動作筋・収縮様式を、自分の体を使って班のメンバーに1分で説明してみよう！",
+        topicAnswerHtml: `
+          <div><strong>区分・割合：</strong>${topic.period}（${topic.ratio}）／ 旧用語：${topic.oldTerm}</div>
+          <div><strong>主動作筋：</strong>${topic.muscleAction}</div>
+          <div style="margin-top:4px; color:var(--primary);"><strong>💡 特徴：</strong>${topic.feature}</div>
+        `,
+        reviewTitle: "📋 正常歩行8相 まとめ表",
+        reviewHtml: GAIT_PHASES.map(p => `
+          <div class="review-item">
+            <div class="review-name">
+              <span>${p.order}. ${p.name}</span>
+              <span class="mini-tag ${p.period === "立脚期" ? "stance" : "swing"}">${p.period} ${p.ratio}</span>
+              <span style="font-size:0.72rem; color:var(--muted); font-weight:700;">旧：${p.oldTerm}</span>
+            </div>
+            <div style="color:var(--text);">${p.feature}</div>
+          </div>
+        `).join("")
+      });
+    }
+
+    /**
+     * =========================================================================
+     * 6. タブ2・3：スピード・マッチング（正常歩行・異常歩行 共通エンジン）
+     * =========================================================================
+     */
+    function buildMatchItems(category, subMode) {
+      if (category === "normal" && subMode === "phases") {
+        return GAIT_PHASES.map(p => ({
+          id: p.id,
+          left: p.name,
+          right: p.muscleAction,
+          hint: `${p.name}（${p.period} ${p.ratio}）：${p.feature}`,
+          topicName: p.name,
+          topicDetailHtml: `
+            <div><strong>区分・旧用語：</strong>${p.period}（${p.ratio}）／ ${p.oldTerm}</div>
+            <div><strong>主動作筋：</strong>${p.muscleAction}</div>
+            <div style="margin-top:4px; color:var(--primary);"><strong>💡 特徴：</strong>${p.feature}</div>
+          `,
+          reviewDetailHtml: `
+            <div><strong>主動作筋：</strong>${p.muscleAction}</div>
+            <div style="color:var(--muted); margin-top:2px;">💡 ${p.feature}</div>
+          `
+        }));
+      }
+
+      if (category === "normal" && subMode === "keywords") {
+        return GAIT_KEYWORDS.map(k => ({
+          id: k.id,
+          left: k.term,
+          right: k.meaning,
+          hint: `${k.term}：${k.hint}`,
+          topicName: k.term,
+          topicDetailHtml: `
+            <div><strong>意味・基準値：</strong>${k.meaning}</div>
+            <div style="margin-top:4px; color:var(--primary);"><strong>💡 ポイント：</strong>${k.hint}</div>
+          `,
+          reviewDetailHtml: `
+            <div><strong>意味・基準値：</strong>${k.meaning}</div>
+            <div style="color:var(--muted); margin-top:2px;">💡 ${k.hint}</div>
+          `
+        }));
+      }
+
+      // 異常歩行（cause / feature）
+      return ABNORMAL_GAITS.map(a => ({
+        id: a.id,
+        left: a.name,
+        right: subMode === "cause" ? a.cause : a.feature,
+        hint: `${a.name}【${a.cause}】：${a.hint}`,
+        topicName: a.name,
+        topicDetailHtml: `
+          <div><strong>主な原因・疾患：</strong>${a.cause}</div>
+          <div><strong>特徴・パターン：</strong>${a.feature}</div>
+          <div style="margin-top:4px; color:var(--primary);"><strong>💡 国試ポイント：</strong>${a.hint}</div>
+        `,
+        reviewDetailHtml: `
+          <div><strong>原因・疾患：</strong>${a.cause}</div>
+          <div><strong>特徴：</strong>${a.feature}</div>
+          <div style="color:var(--muted); margin-top:2px;">💡 ${a.hint}</div>
+        `
+      }));
+    }
+
+    function startMatchGame(category, subMode, isWeakMode = false) {
+      playSound("tap");
+      lastSessionConfig = { type: "match", category, subMode, isWeakMode };
+
+      const weakKey = category === "abnormal"
+        ? STORAGE_KEYS.WEAK_ABNORMAL
+        : (subMode === "phases" ? STORAGE_KEYS.WEAK_NORMAL_PHASES : STORAGE_KEYS.WEAK_NORMAL_KEYWORDS);
+
+      const allItems = buildMatchItems(category, subMode);
+      let targetItems = allItems;
+
+      if (isWeakMode) {
+        const weakIds = getWeakList(weakKey);
+        targetItems = allItems.filter(item => weakIds.includes(item.id));
+        if (targetItems.length === 0) {
+          renderStartScreen();
+          return;
+        }
+      }
+
+      matchState = {
+        category,
+        subMode,
+        weakStorageKey: weakKey,
+        bestTimeKey: `${category}_${subMode}`,
+        isWeakMode,
+        playedItems: [...targetItems],
+        queue: shuffle(targetItems),
+        currentBatch: [],
+        selectedLeft: null,
+        selectedRight: null,
+        matchedInBatch: 0,
+        missCount: 0,
+        combo: 0,
+        maxCombo: 0,
+        missedSet: new Set(),
+        hintTimer: null
+      };
+
+      // カラムヘッダー設定
+      if (category === "normal" && subMode === "phases") {
+        document.getElementById("leftColHeader").textContent = "歩行の相";
+        document.getElementById("rightColHeader").textContent = "主動作筋・収縮様式";
+      } else if (category === "normal" && subMode === "keywords") {
+        document.getElementById("leftColHeader").textContent = "歩行キーワード";
+        document.getElementById("rightColHeader").textContent = "意味・基準値";
+      } else {
+        document.getElementById("leftColHeader").textContent = "異常歩行";
+        document.getElementById("rightColHeader").textContent =
+          subMode === "cause" ? "主な原因・疾患" : "特徴・歩行パターン";
+      }
+
+      document.getElementById("matchCombo").textContent = "0";
+      document.getElementById("hintToast").classList.remove("show");
+      showScreen("matchPlayScreen");
+
+      stopTimer();
+      startTime = performance.now();
+      elapsedSec = 0;
+      document.getElementById("matchTimer").textContent = "0.0";
+      timerInterval = setInterval(() => {
+        elapsedSec = (performance.now() - startTime) / 1000;
+        document.getElementById("matchTimer").textContent = elapsedSec.toFixed(1);
+      }, 100);
+
+      nextMatchBatch();
+    }
+
+    function nextMatchBatch() {
+      if (matchState.queue.length === 0) {
+        finishMatchGame();
+        return;
+      }
+
+      // 同一解答テキストが1バッチ内でなるべく被らないように最大5枚抽出
+      const batch = [];
+      const usedRights = new Set();
+      const leftover = [];
+
+      for (const item of matchState.queue) {
+        if (batch.length < 5 && !usedRights.has(item.right)) {
+          batch.push(item);
+          usedRights.add(item.right);
+        } else {
+          leftover.push(item);
+        }
+      }
+      while (batch.length < 5 && leftover.length > 0) {
+        batch.push(leftover.shift());
+      }
+
+      matchState.currentBatch = batch;
+      matchState.queue = leftover;
+      matchState.matchedInBatch = 0;
+      matchState.selectedLeft = null;
+      matchState.selectedRight = null;
+
+      updateMatchRemaining();
+      renderMatchBoard();
+    }
+
+    function updateMatchRemaining() {
+      const rem = matchState.queue.length + (matchState.currentBatch.length - matchState.matchedInBatch);
+      document.getElementById("matchRemaining").textContent = String(rem);
+    }
+
+    function renderMatchBoard() {
+      const leftCol = document.getElementById("leftCol");
+      const rightCol = document.getElementById("rightCol");
+      leftCol.innerHTML = "";
+      rightCol.innerHTML = "";
+
+      shuffle(matchState.currentBatch).forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.textContent = item.left;
+        card.dataset.answer = item.right;
+        card.onclick = () => selectMatchCard("left", card, item);
+        leftCol.appendChild(card);
+      });
+
+      shuffle(matchState.currentBatch).forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card answer-card";
+        card.textContent = item.right;
+        card.dataset.answer = item.right;
+        card.onclick = () => selectMatchCard("right", card, item);
+        rightCol.appendChild(card);
+      });
+    }
+
+    function selectMatchCard(side, el, item) {
+      if (el.classList.contains("correct")) return;
+      playSound("tap");
+
+      if (side === "left") {
+        if (matchState.selectedLeft) matchState.selectedLeft.el.classList.remove("selected");
+        matchState.selectedLeft = { el, item };
+        el.classList.add("selected");
+      } else {
+        if (matchState.selectedRight) matchState.selectedRight.el.classList.remove("selected");
+        matchState.selectedRight = { el, item };
+        el.classList.add("selected");
+      }
+
+      if (matchState.selectedLeft && matchState.selectedRight) {
+        checkMatchPair();
+      }
+    }
+
+    function checkMatchPair() {
+      const l = matchState.selectedLeft;
+      const r = matchState.selectedRight;
+      matchState.selectedLeft = null;
+      matchState.selectedRight = null;
+
+      const isCorrect = l.el.dataset.answer === r.el.dataset.answer;
+
+      if (isCorrect) {
+        playSound("ok");
+        l.el.classList.remove("selected");
+        r.el.classList.remove("selected");
+        l.el.classList.add("correct");
+        r.el.classList.add("correct");
+
+        matchState.combo++;
+        if (matchState.combo > matchState.maxCombo) {
+          matchState.maxCombo = matchState.combo;
+        }
+        document.getElementById("matchCombo").textContent = String(matchState.combo);
+
+        // 弱点復習モードで今回ノーミス正解なら自動解除
+        if (matchState.isWeakMode && !matchState.missedSet.has(l.item.id)) {
+          removeWeakItem(matchState.weakStorageKey, l.item.id);
+        }
+
+        matchState.matchedInBatch++;
+        updateMatchRemaining();
+
+        if (matchState.matchedInBatch === matchState.currentBatch.length) {
+          setTimeout(nextMatchBatch, 320);
+        }
+      } else {
+        playSound("ng");
+        matchState.missCount++;
+        matchState.combo = 0;
+        document.getElementById("matchCombo").textContent = "0";
+
+        matchState.missedSet.add(l.item.id);
+        addWeakItem(matchState.weakStorageKey, l.item.id);
+
+        l.el.classList.remove("selected");
+        r.el.classList.remove("selected");
+        l.el.classList.add("wrong");
+        r.el.classList.add("wrong");
+
+        setTimeout(() => {
+          l.el.classList.remove("wrong");
+          r.el.classList.remove("wrong");
+        }, 380);
+
+        showMatchHint(`💡 ${l.item.hint}`);
+      }
+    }
+
+    function showMatchHint(text) {
+      const toast = document.getElementById("hintToast");
+      toast.textContent = text;
+      toast.classList.add("show");
+      if (matchState.hintTimer) clearTimeout(matchState.hintTimer);
+      matchState.hintTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3800);
+    }
+
+    function finishMatchGame() {
+      stopTimer();
+      elapsedSec = (performance.now() - startTime) / 1000;
+      playSound("clear");
+
+      let isNewRecord = false;
+      if (!matchState.isWeakMode) {
+        isNewRecord = updateBestTime(matchState.bestTimeKey, elapsedSec);
+      }
+
+      let rank = "B";
+      let subText = "粘り強くクリア！ミスした項目を復習してリベンジしよう！";
+      if (matchState.missCount === 0) {
+        rank = "S";
+        subText = "パーフェクト！歩行の知識がしっかり定着しています！";
+      } else if (matchState.missCount <= 2) {
+        rank = "A";
+        subText = "素晴らしい！あと少しでパーフェクトクリアです！";
+      }
+
+      const missedItems = matchState.playedItems.filter(it => matchState.missedSet.has(it.id));
+      const topicPool = missedItems.length > 0 ? missedItems : matchState.playedItems;
+      const topic = topicPool[Math.floor(Math.random() * topicPool.length)];
+
+      const topicInstruction = matchState.category === "abnormal"
+        ? "この異常歩行を班のメンバーの前で実演し、原因となる筋・疾患を1分で説明してみよう！"
+        : "この相（または用語）の動きと筋活動を、自分の体を使って班のメンバーに1分で説明してみよう！";
+
+      const reviewHtml = missedItems.length > 0
+        ? missedItems.map(it => `
+            <div class="review-item">
+              <div class="review-name danger">${it.left}</div>
+              ${it.reviewDetailHtml}
+            </div>
+          `).join("")
+        : `<div class="perfect-box">🎉 ミスなしパーフェクト！この調子で次のモードにも挑戦しよう！</div>`;
+
+      renderResultScreen({
+        rank,
+        subText,
+        timeSec: elapsedSec,
+        misses: matchState.missCount,
+        isNewRecord,
+        thirdLabel: "最大連続",
+        thirdValue: `${matchState.maxCombo}回`,
+        topicTitle: `お題：${topic.topicName}`,
+        topicInstruction,
+        topicAnswerHtml: topic.topicDetailHtml,
+        reviewTitle: missedItems.length > 0 ? "今回ミスした項目（弱点リストに登録済み）" : "今回の結果",
+        reviewHtml
+      });
+    }
+
+    /**
+     * =========================================================================
+     * 7. 共通リザルト画面描画
+     * =========================================================================
+     */
+    function renderResultScreen({
+      rank,
+      subText,
+      timeSec,
+      misses,
+      isNewRecord,
+      thirdLabel,
+      thirdValue,
+      topicTitle,
+      topicInstruction,
+      topicAnswerHtml,
+      reviewTitle,
+      reviewHtml
+    }) {
+      document.getElementById("newRecordBadge").style.display = isNewRecord ? "inline-block" : "none";
+      const rankEl = document.getElementById("rankBadge");
+      rankEl.textContent = rank;
+      rankEl.className = `rank-badge ${rank}`;
+
+      document.getElementById("resultSub").textContent = subText;
+      document.getElementById("finalTime").textContent = `${timeSec.toFixed(1)}秒`;
+      document.getElementById("finalMiss").textContent = `${misses}回`;
+      document.getElementById("finalThirdLabel").textContent = thirdLabel;
+      document.getElementById("finalThirdValue").textContent = thirdValue;
+
+      document.getElementById("topicTarget").textContent = topicTitle;
+      document.getElementById("topicInstruction").textContent = topicInstruction;
+      const ansEl = document.getElementById("topicAnswer");
+      ansEl.classList.remove("open");
+      ansEl.innerHTML = topicAnswerHtml;
+
+      document.getElementById("reviewSectionTitle").textContent = reviewTitle;
+      document.getElementById("reviewList").innerHTML = reviewHtml;
+
+      showScreen("resultScreen");
+    }
+
+    /**
+     * =========================================================================
+     * 8. イベント登録・初期化
+     * =========================================================================
+     */
+    document.getElementById("soundToggle").onclick = (e) => {
+      soundOn = !soundOn;
+      e.target.textContent = soundOn ? "🔊 音 ON" : "🔇 音 OFF";
+      if (soundOn) playSound("tap");
+    };
+
+    // 3タブ切替
+    document.getElementById("tabPuzzleBtn").onclick = () => {
+      playSound("tap");
+      activeTab = "puzzle";
+      renderStartScreen();
+    };
+    document.getElementById("tabNormalBtn").onclick = () => {
+      playSound("tap");
+      activeTab = "normal";
+      renderStartScreen();
+    };
+    document.getElementById("tabAbnormalBtn").onclick = () => {
+      playSound("tap");
+      activeTab = "abnormal";
+      renderStartScreen();
+    };
+
+    // タブ1：難易度切替
+    document.querySelectorAll(".puzzle-diff-btn").forEach(btn => {
+      btn.onclick = () => {
+        playSound("tap");
+        document.querySelectorAll(".puzzle-diff-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        puzzleDiff = btn.dataset.diff;
+        renderStartScreen();
+      };
+    });
+
+    // タブ2：正常歩行モード切替
+    document.querySelectorAll(".normal-mode-btn").forEach(btn => {
+      btn.onclick = () => {
+        playSound("tap");
+        document.querySelectorAll(".normal-mode-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        normalMode = btn.dataset.mode;
+        renderStartScreen();
+      };
+    });
+
+    // タブ3：異常歩行モード切替
+    document.querySelectorAll(".abnormal-mode-btn").forEach(btn => {
+      btn.onclick = () => {
+        playSound("tap");
+        document.querySelectorAll(".abnormal-mode-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        abnormalMode = btn.dataset.mode;
+        renderStartScreen();
+      };
+    });
+
+    // 各スタートボタン
+    document.getElementById("startPuzzleBtn").onclick = () => startPuzzleGame();
+    document.getElementById("startNormalBtn").onclick = () => startMatchGame("normal", normalMode, false);
+    document.getElementById("weakNormalBtn").onclick = () => startMatchGame("normal", normalMode, true);
+    document.getElementById("startAbnormalBtn").onclick = () => startMatchGame("abnormal", abnormalMode, false);
+    document.getElementById("weakAbnormalBtn").onclick = () => startMatchGame("abnormal", abnormalMode, true);
+
+    // 8相パズル操作
+    document.getElementById("resetPuzzleBtn").onclick = () => {
+      if (puzzleState.isLocked) return;
+      playSound("tap");
+      hidePuzzleFeedback();
+      resetPuzzleSlots();
+    };
+    document.getElementById("submitPuzzleBtn").onclick = checkPuzzleAnswer;
+    document.getElementById("quitPuzzleBtn").onclick = () => {
+      stopTimer();
+      playSound("tap");
+      renderStartScreen();
+      showScreen("startScreen");
+    };
+
+    // マッチング中断
+    document.getElementById("quitMatchBtn").onclick = () => {
+      stopTimer();
+      playSound("tap");
+      renderStartScreen();
+      showScreen("startScreen");
+    };
+
+    // リザルト操作
+    document.getElementById("toggleTopicAnswer").onclick = () => {
+      playSound("tap");
+      document.getElementById("topicAnswer").classList.toggle("open");
+    };
+
+    document.getElementById("retryBtn").onclick = () => {
+      if (!lastSessionConfig) {
+        renderStartScreen();
+        showScreen("startScreen");
+        return;
+      }
+      if (lastSessionConfig.type === "puzzle") {
+        startPuzzleGame();
+      } else {
+        // 弱点モードで全解除された場合はタイトルへ
+        if (lastSessionConfig.isWeakMode) {
+          const weakKey = lastSessionConfig.category === "abnormal"
+            ? STORAGE_KEYS.WEAK_ABNORMAL
+            : (lastSessionConfig.subMode === "phases"
+              ? STORAGE_KEYS.WEAK_NORMAL_PHASES
+              : STORAGE_KEYS.WEAK_NORMAL_KEYWORDS);
+          if (getWeakList(weakKey).length === 0) {
+            renderStartScreen();
+            showScreen("startScreen");
+            return;
+          }
+        }
+        startMatchGame(
+          lastSessionConfig.category,
+          lastSessionConfig.subMode,
+          lastSessionConfig.isWeakMode
+        );
+      }
+    };
+
+    document.getElementById("backHomeBtn").onclick = () => {
+      playSound("tap");
+      renderStartScreen();
+      showScreen("startScreen");
+    };
+
+    // 初期描画
+    renderStartScreen();
+  </script>
+</body>
+</html>

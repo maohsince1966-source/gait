@@ -3,25 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>正常・異常歩行マスター</title>
+  <title>🚶 正常・異常歩行マスター</title>
   <style>
     :root {
       --primary: #2563eb;
       --primary-dark: #1d4ed8;
       --primary-light: #eff6ff;
       --primary-border: #bfdbfe;
+
       --stance-bg: #eff6ff;
       --stance-border: #93c5fd;
       --stance-text: #1d4ed8;
+
       --swing-bg: #ecfdf5;
       --swing-border: #6ee7b7;
       --swing-text: #047857;
+
+      --accent: #ea580c;
+      --accent-light: #fff7ed;
+
       --success: #16a34a;
       --success-light: #dcfce7;
       --danger: #dc2626;
       --danger-light: #fee2e2;
       --warning: #d97706;
       --warning-light: #fef3c7;
+
+      /* 筋収縮様式カラー */
+      --concentric: #dc2626;
+      --concentric-bg: #fef2f2;
+      --eccentric: #2563eb;
+      --eccentric-bg: #eff6ff;
+      --isometric: #7c3aed;
+      --isometric-bg: #f5f3ff;
+
       --bg: #f8fafc;
       --card: #ffffff;
       --text: #1e293b;
@@ -44,10 +59,10 @@
     }
 
     .container {
-      max-width: 540px;
+      max-width: 520px;
       margin: 0 auto;
       min-height: 100vh;
-      padding: 16px;
+      padding: 14px 14px 20px;
       display: flex;
       flex-direction: column;
     }
@@ -59,24 +74,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+      gap: 8px;
     }
 
     .header-title-wrap {
       display: flex;
       flex-direction: column;
+      min-width: 0;
     }
 
     h1 {
-      font-size: 1.25rem;
+      font-size: 1.18rem;
       font-weight: 800;
       margin: 0;
       color: var(--primary);
       letter-spacing: -0.02em;
+      white-space: nowrap;
     }
 
     .header-sub {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--muted);
       font-weight: 600;
     }
@@ -85,8 +103,8 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 7px 13px;
-      font-size: 0.8rem;
+      padding: 6px 12px;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
       color: var(--text);
@@ -104,7 +122,7 @@
     .screen {
       display: none;
       flex-direction: column;
-      gap: 14px;
+      gap: 13px;
       flex: 1;
     }
 
@@ -115,13 +133,13 @@
     .section-card {
       background: var(--card);
       border-radius: 14px;
-      padding: 15px;
+      padding: 14px;
       box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
       border: 1px solid #e2e8f0;
     }
 
     .section-title {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 800;
       color: var(--muted);
       margin: 0 0 10px 0;
@@ -135,8 +153,8 @@
       color: #ffffff;
       border: none;
       border-radius: 12px;
-      padding: 15px;
-      font-size: 1rem;
+      padding: 14px;
+      font-size: 0.96rem;
       font-weight: 800;
       cursor: pointer;
       width: 100%;
@@ -162,7 +180,7 @@
       border: 2px solid var(--warning);
       border-radius: 12px;
       padding: 12px;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 800;
       cursor: pointer;
       width: 100%;
@@ -178,8 +196,8 @@
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 12px;
-      font-size: 0.9rem;
+      padding: 11px;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
       width: 100%;
@@ -190,14 +208,14 @@
     }
 
     /* ==========================================
-       スタート画面：3タブ切り替え
+       1段4等分タブナビゲーション
        ========================================== */
     .game-tabs {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 5px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
       background: #e2e8f0;
-      padding: 5px;
+      padding: 4px;
       border-radius: 14px;
     }
 
@@ -205,16 +223,16 @@
       background: transparent;
       border: none;
       border-radius: 10px;
-      padding: 10px 4px;
-      font-size: 0.8rem;
-      font-weight: 800;
+      padding: 8px 2px;
       color: var(--muted);
       cursor: pointer;
       transition: all 0.18s;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 2px;
+      min-width: 0;
     }
 
     .game-tab-btn.active {
@@ -223,23 +241,29 @@
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
     }
 
-    .game-tab-sub {
-      font-size: 0.64rem;
-      font-weight: 600;
-      opacity: 0.85;
+    .tab-icon {
+      font-size: 1rem;
+      line-height: 1.1;
+    }
+
+    .tab-label {
+      font-size: 0.67rem;
+      font-weight: 800;
+      white-space: nowrap;
+      letter-spacing: -0.02em;
     }
 
     .tab-panel {
       display: none;
       flex-direction: column;
-      gap: 14px;
+      gap: 13px;
     }
 
     .tab-panel.active {
       display: flex;
     }
 
-    /* 選択ボタン（難易度・モード） */
+    /* 選択ボタン */
     .mode-list {
       display: flex;
       flex-direction: column;
@@ -250,8 +274,8 @@
       background: var(--bg);
       border: 2px solid var(--border);
       border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 0.85rem;
+      padding: 11px 13px;
+      font-size: 0.84rem;
       font-weight: 800;
       color: var(--text);
       cursor: pointer;
@@ -270,8 +294,8 @@
     }
 
     .select-btn .sub {
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.69rem;
+      font-weight: 700;
       color: var(--muted);
       flex-shrink: 0;
     }
@@ -284,14 +308,14 @@
       background: var(--primary-light);
       border: 1px solid var(--primary-border);
       border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 0.82rem;
+      padding: 12px 13px;
+      font-size: 0.81rem;
       color: #1e3a8a;
       line-height: 1.55;
     }
 
     .best-record {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
       color: var(--muted);
       text-align: center;
@@ -307,7 +331,7 @@
       background: var(--card);
       padding: 10px 14px;
       border-radius: 12px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 800;
       border: 1px solid #e2e8f0;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -324,7 +348,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       font-weight: 800;
       padding: 4px 10px;
       border-radius: 8px;
@@ -352,11 +376,11 @@
 
     .slot-btn {
       width: 100%;
-      min-height: 44px;
+      min-height: 43px;
       background: #f8fafc;
       border: 2px dashed var(--border);
       border-radius: 10px;
-      padding: 7px 10px;
+      padding: 6px 10px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -381,7 +405,7 @@
       width: 24px;
       height: 24px;
       border-radius: 6px;
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       font-weight: 900;
       display: inline-flex;
       align-items: center;
@@ -419,7 +443,7 @@
     }
 
     .slot-main-text {
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       font-weight: 800;
       color: #94a3b8;
     }
@@ -429,7 +453,7 @@
     }
 
     .slot-hint-badge {
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       font-weight: 700;
       color: var(--muted);
       background: #f1f5f9;
@@ -442,7 +466,7 @@
       display: none;
       border-radius: 10px;
       padding: 10px 12px;
-      font-size: 0.82rem;
+      font-size: 0.81rem;
       font-weight: 800;
       text-align: center;
     }
@@ -472,7 +496,7 @@
       background: #f1f5f9;
       border: 1px solid var(--border);
       color: var(--muted);
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 8px;
@@ -489,8 +513,8 @@
       background: var(--card);
       border: 2px solid var(--border);
       border-radius: 10px;
-      padding: 10px 8px;
-      min-height: 54px;
+      padding: 9px 7px;
+      min-height: 52px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -514,17 +538,17 @@
     }
 
     .puzzle-card-name {
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 800;
       color: var(--text);
       line-height: 1.25;
     }
 
     .puzzle-card-hint {
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       font-weight: 700;
       color: var(--muted);
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     /* ==========================================
@@ -533,7 +557,7 @@
     .board {
       display: grid;
       grid-template-columns: 1fr 1.28fr;
-      gap: 10px;
+      gap: 9px;
       flex: 1;
       align-content: start;
     }
@@ -541,11 +565,11 @@
     .column {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
     }
 
     .col-header {
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       text-align: center;
       color: var(--muted);
       font-weight: 800;
@@ -555,13 +579,13 @@
       background: var(--card);
       border: 2px solid var(--border);
       border-radius: 12px;
-      padding: 11px 9px;
-      min-height: 72px;
+      padding: 10px 8px;
+      min-height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       font-weight: 800;
       cursor: pointer;
       transition: transform 0.1s, background-color 0.15s, border-color 0.15s, opacity 0.25s;
@@ -571,7 +595,7 @@
     }
 
     .card.answer-card {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 700;
       line-height: 1.35;
     }
@@ -611,13 +635,13 @@
     }
 
     .hint-toast {
-      min-height: 60px;
+      min-height: 58px;
       background: var(--danger-light);
       border: 1px solid #fca5a5;
       color: #991b1b;
       border-radius: 12px;
       padding: 10px 12px;
-      font-size: 0.79rem;
+      font-size: 0.78rem;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -631,11 +655,348 @@
     }
 
     /* ==========================================
+       タブ4：👀 コマ送り図鑑（歩行周期・筋活動マッピング）
+       ========================================== */
+    .atlas-stage-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .atlas-legend {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f8fafc;
+      padding: 3px 8px;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .svg-wrap {
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .svg-wrap svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.92); opacity: 0.9; }
+      50% { transform: scale(1.25); opacity: 0.35; }
+      100% { transform: scale(0.92); opacity: 0.9; }
+    }
+
+    .muscle-pulse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: pulseRing 1.5s infinite ease-in-out;
+    }
+
+    /* 1〜8ステップボタン */
+    .step-dots-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
+    }
+
+    .step-dot-btn {
+      border-radius: 8px;
+      padding: 7px 0;
+      font-size: 0.74rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      transition: all 0.15s;
+      border: 2px solid transparent;
+    }
+
+    .step-dot-btn.stance {
+      background: var(--stance-bg);
+      color: var(--stance-text);
+      border-color: var(--stance-border);
+    }
+
+    .step-dot-btn.swing {
+      background: var(--swing-bg);
+      color: var(--swing-text);
+      border-color: var(--swing-border);
+    }
+
+    .step-dot-btn.stance.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+    }
+
+    .step-dot-btn.swing.active {
+      background: #059669;
+      color: #ffffff;
+      border-color: #047857;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+    }
+
+    .step-dot-abbr {
+      font-size: 0.56rem;
+      font-weight: 800;
+      opacity: 0.9;
+    }
+
+    /* コマ送り操作バー */
+    .atlas-controls {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr 1fr;
+      gap: 8px;
+    }
+
+    .ctrl-btn {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ctrl-btn:active {
+      transform: scale(0.96);
+      background: #e2e8f0;
+    }
+
+    .ctrl-btn.play-btn {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    .ctrl-btn.play-btn.playing {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* 国試ポイント詳細カード */
+    .atlas-detail-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .atlas-phase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .atlas-phase-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .atlas-phase-sub {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .period-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .period-pill.stance {
+      background: var(--stance-bg);
+      color: var(--stance-text);
+      border: 1px solid var(--stance-border);
+    }
+
+    .period-pill.swing {
+      background: var(--swing-bg);
+      color: var(--swing-text);
+      border: 1px solid var(--swing-border);
+    }
+
+    .muscle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .muscle-row {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .muscle-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .muscle-name {
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .contraction-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .contraction-badge.concentric {
+      background: var(--concentric-bg);
+      color: var(--concentric);
+      border: 1px solid #fca5a5;
+    }
+
+    .contraction-badge.eccentric {
+      background: var(--eccentric-bg);
+      color: var(--eccentric);
+      border: 1px solid #93c5fd;
+    }
+
+    .contraction-badge.isometric {
+      background: var(--isometric-bg);
+      color: var(--isometric);
+      border: 1px solid #c4b5fd;
+    }
+
+    .muscle-role {
+      font-size: 0.76rem;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .angle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .angle-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 7px 6px;
+      text-align: center;
+    }
+
+    .angle-label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: var(--muted);
+      display: block;
+    }
+
+    .angle-val {
+      font-size: 0.8rem;
+      font-weight: 900;
+      color: var(--text);
+      margin-top: 2px;
+      display: block;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .meta-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.75rem;
+    }
+
+    .meta-box strong {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .exam-tip-box {
+      background: var(--accent-light);
+      border: 1px solid #fed7aa;
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.79rem;
+      color: #9a3412;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    /* ==========================================
        共通リザルト画面
        ========================================== */
     .result-hero {
       text-align: center;
-      padding: 18px 16px;
+      padding: 16px;
       background: var(--card);
       border-radius: 14px;
       border: 1px solid #e2e8f0;
@@ -647,7 +1008,7 @@
       background: var(--warning-light);
       color: var(--warning);
       border: 1px solid #fcd34d;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 800;
       padding: 3px 11px;
       border-radius: 20px;
@@ -656,7 +1017,7 @@
 
     .rank-badge {
       display: inline-block;
-      font-size: 3rem;
+      font-size: 2.9rem;
       font-weight: 900;
       line-height: 1.05;
       margin: 4px 0;
@@ -672,13 +1033,13 @@
       margin-top: 12px;
       padding-top: 12px;
       border-top: 1px solid #f1f5f9;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--muted);
     }
 
     .stats-row strong {
       display: block;
-      font-size: 1.02rem;
+      font-size: 1rem;
       color: var(--text);
       margin-top: 2px;
     }
@@ -687,18 +1048,18 @@
       background: var(--primary-light);
       border: 2px dashed var(--primary);
       border-radius: 14px;
-      padding: 14px;
+      padding: 13px;
     }
 
     .topic-label {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 800;
       color: var(--primary);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
     .topic-target {
-      font-size: 1.06rem;
+      font-size: 1.02rem;
       font-weight: 800;
       margin-bottom: 6px;
     }
@@ -708,8 +1069,8 @@
       border: 1px solid var(--primary);
       color: var(--primary);
       border-radius: 8px;
-      padding: 7px 12px;
-      font-size: 0.8rem;
+      padding: 6px 12px;
+      font-size: 0.78rem;
       font-weight: 800;
       cursor: pointer;
       margin-top: 8px;
@@ -720,7 +1081,7 @@
       margin-top: 10px;
       padding-top: 10px;
       border-top: 1px solid var(--primary-border);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       line-height: 1.55;
     }
 
@@ -728,11 +1089,10 @@
       display: block;
     }
 
-    /* 復習リスト & 8相まとめ表 */
     .review-item {
       border-bottom: 1px solid #e2e8f0;
-      padding: 10px 0;
-      font-size: 0.81rem;
+      padding: 9px 0;
+      font-size: 0.8rem;
     }
 
     .review-item:last-child {
@@ -742,7 +1102,7 @@
 
     .review-name {
       font-weight: 800;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       margin-bottom: 3px;
       display: flex;
       align-items: center;
@@ -753,7 +1113,7 @@
     .review-name.danger { color: var(--danger); }
 
     .mini-tag {
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       font-weight: 800;
       padding: 1px 7px;
       border-radius: 10px;
@@ -767,10 +1127,22 @@
       border: 1px solid #86efac;
       color: #166534;
       border-radius: 12px;
-      padding: 14px;
+      padding: 13px;
       text-align: center;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       font-weight: 800;
+    }
+
+    /* ==========================================
+       フッター
+       ========================================== */
+    footer {
+      text-align: center;
+      padding: 20px 12px 10px;
+      color: #64748b;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      margin-top: auto;
     }
   </style>
 </head>
@@ -779,31 +1151,34 @@
     <!-- 共通ヘッダー -->
     <header>
       <div class="header-title-wrap">
-        <h1>正常・異常歩行マスター</h1>
-        <span class="header-sub">OT 1・2年次 運動学・評価学（8相＋10用語＋11異常歩行）</span>
+        <h1>🚶 正常・異常歩行マスター</h1>
+        <span class="header-sub">OT 1・2年次 運動学・評価学（4モード完結）</span>
       </div>
       <button id="soundToggle" class="sound-btn" type="button">🔊 音 ON</button>
     </header>
 
     <!-- ==========================================
-         1. スタート画面
+         1. スタート画面（1段4等分タブ）
          ========================================== -->
     <section id="startScreen" class="screen active">
-      <!-- 3モード切り替えタブ -->
-      <div class="game-tabs">
+      <nav class="game-tabs" aria-label="学習モード切替">
         <button id="tabPuzzleBtn" class="game-tab-btn active" type="button">
-          <span>🔄 8相パズル</span>
-          <span class="game-tab-sub">順番並び替え</span>
+          <span class="tab-icon">🔄</span>
+          <span class="tab-label">8相パズル</span>
         </button>
         <button id="tabNormalBtn" class="game-tab-btn" type="button">
-          <span>⚡ 正常歩行</span>
-          <span class="game-tab-sub">筋活動・用語</span>
+          <span class="tab-icon">⚡</span>
+          <span class="tab-label">正常歩行</span>
         </button>
         <button id="tabAbnormalBtn" class="game-tab-btn" type="button">
-          <span>🏥 異常歩行</span>
-          <span class="game-tab-sub">原因・特徴11種</span>
+          <span class="tab-icon">🏥</span>
+          <span class="tab-label">異常歩行</span>
         </button>
-      </div>
+        <button id="tabAtlasBtn" class="game-tab-btn" type="button">
+          <span class="tab-icon">👀</span>
+          <span class="tab-label">コマ送り図鑑</span>
+        </button>
+      </nav>
 
       <!-- タブ1パネル：歩行8相 順番パズル -->
       <div id="panelPuzzle" class="tab-panel active">
@@ -823,7 +1198,7 @@
 
         <div class="intro-box">
           ランチョ・ロス・アミーゴ方式の<strong>正常歩行8相</strong>を、初期接地（1）から遊脚終期（8）まで順番に並べるパズルです。<br>
-          <strong>1〜5が立脚期（60%）、6〜8が遊脚期（40%）</strong>になります。間違えると最初からやり直し！
+          <strong>1〜5が立脚期（60%・青）、6〜8が遊脚期（40%・緑）</strong>になります。
         </div>
 
         <button id="startPuzzleBtn" class="primary-btn" type="button">8相パズルをスタート！</button>
@@ -833,7 +1208,7 @@
       <!-- タブ2パネル：正常歩行 スピード・マッチング -->
       <div id="panelNormal" class="tab-panel">
         <div class="section-card">
-          <p class="section-title">モードを選ぶ</p>
+          <p class="section-title">コースを選ぶ</p>
           <div class="mode-list">
             <button class="select-btn normal-mode-btn selected" type="button" data-mode="phases">
               <span><strong>初級</strong>：各相 ↔ 主動作筋・収縮様式</span>
@@ -859,11 +1234,11 @@
           <p class="section-title">モードを選ぶ（間欠性跛行を含む全11種）</p>
           <div class="mode-list">
             <button class="select-btn abnormal-mode-btn selected" type="button" data-mode="cause">
-              <span><strong>初級</strong>：異常歩行 ↔ 主な原因・疾患</span>
+              <span><strong>初級</strong>：異常歩行 ↔ 原因・疾患</span>
               <span class="sub">全11種</span>
             </button>
             <button class="select-btn abnormal-mode-btn" type="button" data-mode="feature">
-              <span><strong>中級</strong>：異常歩行 ↔ 特徴・歩行パターン</span>
+              <span><strong>上級</strong>：異常歩行 ↔ 特徴・歩き方</span>
               <span class="sub">全11種</span>
             </button>
           </div>
@@ -875,6 +1250,37 @@
         </button>
         <div id="abnormalBestRecord" class="best-record"></div>
       </div>
+
+      <!-- タブ4パネル：👀 コマ送り図鑑（歩行周期コマ送り・筋活動マッピング） -->
+      <div id="panelAtlas" class="tab-panel">
+        <div class="atlas-stage-card">
+          <!-- 凡例 -->
+          <div class="atlas-legend">
+            <span class="legend-item"><span class="legend-dot" style="background:var(--concentric);"></span>求心性</span>
+            <span class="legend-item"><span class="legend-dot" style="background:var(--eccentric);"></span>遠心性</span>
+            <span class="legend-item"><span class="legend-dot" style="background:var(--isometric);"></span>等尺性</span>
+            <span class="legend-item"><span class="legend-dot" style="background:#eab308; border:1px solid #a16207;"></span>重心(COM)</span>
+          </div>
+
+          <!-- SVG歩行アニメーションエリア -->
+          <div class="svg-wrap">
+            <svg id="gaitSvg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="歩行周期の姿勢と筋活動イラスト"></svg>
+          </div>
+
+          <!-- 1〜8 ステップジャンプボタン -->
+          <div id="atlasStepDots" class="step-dots-grid"></div>
+
+          <!-- コマ送り・自動再生コントロール -->
+          <div class="atlas-controls">
+            <button id="atlasPrevBtn" class="ctrl-btn" type="button">◀ 前へ</button>
+            <button id="atlasPlayBtn" class="ctrl-btn play-btn" type="button">▶ 自動再生</button>
+            <button id="atlasNextBtn" class="ctrl-btn" type="button">次へ ▶</button>
+          </div>
+        </div>
+
+        <!-- 国試ポイント詳細カード -->
+        <div id="atlasDetailCard" class="atlas-detail-card"></div>
+      </div>
     </section>
 
     <!-- ==========================================
@@ -883,11 +1289,10 @@
     <section id="puzzlePlayScreen" class="screen">
       <div class="status-bar">
         <span>⏱ <span id="puzzleTimer">0.0</span>秒</span>
-        <span id="puzzleDiffLabel" style="font-size:0.78rem; color:var(--muted);">初級（ヒントあり）</span>
+        <span id="puzzleDiffLabel" style="font-size:0.76rem; color:var(--muted);">初級（ヒントあり）</span>
         <span class="miss-badge">ミス <span id="puzzleMiss">0</span>回</span>
       </div>
 
-      <!-- 1〜8スロット -->
       <div id="puzzleSlotsContainer" class="section-card" style="padding: 12px;">
         <div class="phase-group-label stance">
           <span>🟦 立脚期（Stance Phase）</span>
@@ -902,10 +1307,8 @@
         <div id="swingSlots" class="slots-list"></div>
       </div>
 
-      <!-- 判定フィードバック -->
       <div id="puzzleFeedback" class="puzzle-feedback"></div>
 
-      <!-- シャッフルされた8枚の選択肢 -->
       <div class="section-card" style="padding: 12px;">
         <div class="choices-header">
           <span class="section-title" style="margin:0;">選択肢カード（順番にタップ）</span>
@@ -949,9 +1352,9 @@
     <section id="resultScreen" class="screen">
       <div class="result-hero">
         <div id="newRecordBadge" class="new-record-badge" style="display:none;">🎉 ベストタイム更新！</div>
-        <div style="font-size:0.82rem; font-weight:700; color:var(--muted);">クリアランク</div>
+        <div style="font-size:0.8rem; font-weight:700; color:var(--muted);">クリアランク</div>
         <div id="rankBadge" class="rank-badge S">S</div>
-        <div id="resultSub" style="font-size:0.86rem; font-weight:800;"></div>
+        <div id="resultSub" style="font-size:0.84rem; font-weight:800;"></div>
         <div class="stats-row">
           <div>クリアタイム<strong id="finalTime">0.0秒</strong></div>
           <div>ミス回数<strong id="finalMiss">0回</strong></div>
@@ -959,16 +1362,14 @@
         </div>
       </div>
 
-      <!-- グループ学習「実演・解説お題」 -->
       <div class="topic-box">
         <div class="topic-label">👥 グループ学習「実演・解説お題」</div>
         <div id="topicTarget" class="topic-target"></div>
-        <div id="topicInstruction" style="font-size:0.82rem;"></div>
+        <div id="topicInstruction" style="font-size:0.8rem;"></div>
         <button id="toggleTopicAnswer" class="toggle-answer-btn" type="button">解答・ヒントを見る</button>
         <div id="topicAnswer" class="topic-answer"></div>
       </div>
 
-      <!-- 復習リスト（8相まとめ表 または ミス復習リスト） -->
       <div id="reviewSection" class="section-card">
         <p id="reviewSectionTitle" class="section-title">復習リスト</p>
         <div id="reviewList"></div>
@@ -977,6 +1378,9 @@
       <button id="retryBtn" class="primary-btn" type="button">もう一度チャレンジ</button>
       <button id="backHomeBtn" class="secondary-btn" type="button">タイトルに戻る</button>
     </section>
+
+    <!-- フッター -->
+    <footer>&copy;Created by Shunsuke Usui</footer>
   </div>
 
   <script>
@@ -986,233 +1390,241 @@
      * =========================================================================
      */
 
-    // 正常歩行 8相データ（ランチョ・ロス・アミーゴ方式）
+    // 正常歩行 8相データ（パズル・マッチング・コマ送り図鑑で共用）
     const GAIT_PHASES = [
       {
         id: "gp1",
         order: 1,
+        abbr: "IC",
         name: "初期接地（IC）",
         period: "立脚期",
         ratio: "0〜2%",
         oldTerm: "踵接地",
         muscleAction: "大殿筋・前脛骨筋・ハムストリングスが活動（踵接地）",
-        feature: "踵が地面につく瞬間。大殿筋・前脛骨筋・ハムストリングスが活動。"
+        feature: "踵が地面につく瞬間。大殿筋・前脛骨筋・ハムストリングスが活動。",
+        angles: { hip: "屈曲 30°", knee: "伸展 0°（軽度屈曲）", ankle: "中間位 0°" },
+        comHeight: "低め（下降中）",
+        rocker: "ヒールロッカー開始",
+        examTip: "踵から接地するため、足関節は中間位（0°）、膝はほぼ伸展位（0°）。股関節は屈曲30°で前方に振り出した状態！",
+        muscles: [
+          { name: "前脛骨筋", type: "isometric", label: "等尺性", role: "足関節を中間位（0°）に保持して踵接地を作る", site: "shin" },
+          { name: "大殿筋・ハムストリングス", type: "eccentric", label: "遠心性", role: "股関節のさらなる屈曲を抑え、体幹の前倒れを防ぐ", site: "glute" },
+          { name: "大腿四頭筋", type: "isometric", label: "等尺性", role: "膝関節の伸展位を安定させる", site: "quad" }
+        ],
+        // SVG描画用パラメータ（右脚＝観察側、左脚＝対側、角度は鉛直下向き0°・前方＋・後方−）
+        pose: {
+          hipY: 112,
+          rHip: 28, rKnee: 4, rAnkle: 0,
+          lHip: -20, lKnee: 16, lAnkle: -12,
+          rArm: -18, lArm: 18
+        }
       },
       {
         id: "gp2",
         order: 2,
+        abbr: "LR",
         name: "荷重応答期（LR）",
         period: "立脚期",
         ratio: "0〜12%",
         oldTerm: "足底接地",
         muscleAction: "前脛骨筋（遠心性）で足底落下防止・大腿四頭筋（遠心性）で膝折れ防止",
-        feature: "衝撃吸収期。前脛骨筋（遠心性）で足底落下を防ぎ、大腿四頭筋（遠心性）で膝折れを防ぐ。"
+        feature: "衝撃吸収期。前脛骨筋（遠心性）で足底落下を防ぎ、大腿四頭筋（遠心性）で膝折れを防ぐ。",
+        angles: { hip: "屈曲 25°", knee: "屈曲 15°（衝撃吸収）", ankle: "底屈 5〜10°" },
+        comHeight: "★ 最低点（両脚支持期）",
+        rocker: "ヒールロッカー（踵軸）",
+        examTip: "国試最頻出！『前脛骨筋の遠心性収縮（足底がパタンと落ちるのを防ぐ）』と『大腿四頭筋の遠心性収縮（膝折れ防止）』のセットが鉄板！",
+        muscles: [
+          { name: "前脛骨筋", type: "eccentric", label: "遠心性", role: "足底が床へ急激に落下するのをブレーキ制御", site: "shin" },
+          { name: "大腿四頭筋", type: "eccentric", label: "遠心性", role: "膝の軽度屈曲（15°）を制御し、膝折れを防ぎながら衝撃吸収", site: "quad" },
+          { name: "中殿筋・大殿筋", type: "eccentric", label: "遠心性", role: "骨盤の水平保持と股関節の安定化", site: "glute" }
+        ],
+        pose: {
+          hipY: 118,
+          rHip: 20, rKnee: 16, rAnkle: -8,
+          lHip: -22, lKnee: 32, lAnkle: -18,
+          rArm: -12, lArm: 12
+        }
       },
       {
         id: "gp3",
         order: 3,
+        abbr: "MSt",
         name: "立脚中期（MSt）",
         period: "立脚期",
         ratio: "12〜31%",
         oldTerm: "立脚中期",
         muscleAction: "中殿筋（骨盤の水平保持）・下腿三頭筋（遠心性で下腿前傾を制御）",
-        feature: "単脚支持の前半。中殿筋が骨盤を水平に保持。重心は最も高く、側方へ最大移動。下腿三頭筋が遠心性収縮で下腿の前傾を制御。"
+        feature: "単脚支持の前半。中殿筋が骨盤を水平に保持。重心は最も高く、側方へ最大移動。下腿三頭筋が遠心性収縮で下腿の前傾を制御。",
+        angles: { hip: "中間位 0°", knee: "伸展 0〜5°", ankle: "背屈 5°" },
+        comHeight: "★ 最高点（単脚支持）",
+        rocker: "アンクルロッカー（足関節軸）",
+        examTip: "重心が最も高くなり、支持脚側へ最大移動する相！中殿筋が弱いと遊脚側の骨盤が下がる（トレンデレンブルグ徴候）。",
+        muscles: [
+          { name: "中殿筋", type: "isometric", label: "等尺性", role: "単脚支持で遊脚側の骨盤が下がらないよう水平保持", site: "glute" },
+          { name: "下腿三頭筋（ヒラメ筋）", type: "eccentric", label: "遠心性", role: "足関節を軸とした下腿の前方傾斜をブレーキ制御", site: "calf" }
+        ],
+        pose: {
+          hipY: 102,
+          rHip: 2, rKnee: 4, rAnkle: 6,
+          lHip: 6, lKnee: 38, lAnkle: 0,
+          rArm: 0, lArm: 0
+        }
       },
       {
         id: "gp4",
         order: 4,
+        abbr: "TSt",
         name: "立脚終期（TSt）",
         period: "立脚期",
         ratio: "31〜50%",
         oldTerm: "踵離地",
         muscleAction: "下腿三頭筋（求心性収縮／プッシュオフで強い推進力）",
-        feature: "単脚支持の後半。踵が離れ、下腿三頭筋の求心性収縮（プッシュオフ）で強い推進力を生む。"
+        feature: "単脚支持の後半。踵が離れ、下腿三頭筋の求心性収縮（プッシュオフ）で強い推進力を生む。",
+        angles: { hip: "伸展 10〜15°", knee: "伸展 0°", ankle: "背屈 10°→底屈へ" },
+        comHeight: "やや下降開始",
+        rocker: "フォアフットロッカー（前足部軸）",
+        examTip: "股関節が最大伸展（約10〜15°）になり、下腿三頭筋の求心性収縮（プッシュオフ）で体を前へ押し出す推進力ピークの相！",
+        muscles: [
+          { name: "下腿三頭筋（腓腹筋・ヒラメ筋）", type: "concentric", label: "求心性", role: "踵を浮かせて床を蹴り出し（プッシュオフ）、強い推進力を生む", site: "calf" },
+          { name: "中殿筋", type: "isometric", label: "等尺性", role: "単脚支持後半の骨盤水平保持を継続", site: "glute" }
+        ],
+        pose: {
+          hipY: 108,
+          rHip: -16, rKnee: 4, rAnkle: 10,
+          lHip: 26, lKnee: 12, lAnkle: 0,
+          rArm: 14, lArm: -14
+        }
       },
       {
         id: "gp5",
         order: 5,
+        abbr: "PSw",
         name: "前遊脚期（PSw）",
         period: "立脚期",
         ratio: "50〜62%",
         oldTerm: "つま先離地",
         muscleAction: "腸腰筋・大腿直筋（股関節屈筋が振り出しの準備）",
-        feature: "両脚支持期（第2）。股関節屈筋（腸腰筋・大腿直筋）が働き、下肢を前に振り出す準備をする。"
+        feature: "両脚支持期（第2）。股関節屈筋（腸腰筋・大腿直筋）が働き、下肢を前に振り出す準備をする。",
+        angles: { hip: "伸展 10°→屈曲へ", knee: "屈曲 35〜40°", ankle: "底屈 15〜20°" },
+        comHeight: "★ 最低点（第2両脚支持）",
+        rocker: "フォアフットロッカー終了",
+        examTip: "対側の足が接地して体重が移る第2の両脚支持期。膝が素早く屈曲（約40°）し、腸腰筋などが振り出しの準備を始める！",
+        muscles: [
+          { name: "腸腰筋・長内転筋", type: "concentric", label: "求心性", role: "股関節を屈曲させ、下肢を前方へ振り出す準備をする", site: "hipFlex" },
+          { name: "大腿直筋", type: "eccentric", label: "遠心性", role: "膝関節が過度に屈曲しすぎないようコントロール", site: "quad" }
+        ],
+        pose: {
+          hipY: 117,
+          rHip: -12, rKnee: 38, rAnkle: -16,
+          lHip: 22, lKnee: 14, lAnkle: -4,
+          rArm: 18, lArm: -18
+        }
       },
       {
         id: "gp6",
         order: 6,
+        abbr: "ISw",
         name: "遊脚初期（ISw）",
         period: "遊脚期",
         ratio: "62〜75%",
         oldTerm: "加速期",
         muscleAction: "腸腰筋（股屈曲）・前脛骨筋（足背屈でクリアランス確保）",
-        feature: "つま先が床から離れる。腸腰筋で股屈曲、膝は約60°屈曲し、前脛骨筋で足背屈して床とのクリアランスを確保。"
+        feature: "つま先が床から離れる。腸腰筋で股屈曲、膝は約60°屈曲し、前脛骨筋で足背屈して床とのクリアランスを確保。",
+        angles: { hip: "屈曲 15〜20°", knee: "屈曲 60°（最大）", ankle: "底屈 5°→中間位へ" },
+        comHeight: "上昇中",
+        rocker: "なし（遊脚期）",
+        examTip: "膝関節が歩行周期の中で最大屈曲（約60°）になる相！前脛骨筋が麻痺するとつま先が床に引っかかる（鶏歩の原因）。",
+        muscles: [
+          { name: "腸腰筋", type: "concentric", label: "求心性", role: "大腿を前方へ力強く引き上げる（加速）", site: "hipFlex" },
+          { name: "前脛骨筋", type: "concentric", label: "求心性", role: "足関節を背屈させて床とのクリアランス（隙間）を確保", site: "shin" }
+        ],
+        pose: {
+          hipY: 110,
+          rHip: 14, rKnee: 60, rAnkle: -4,
+          lHip: 10, lKnee: 10, lAnkle: 2,
+          rArm: 10, lArm: -10
+        }
       },
       {
         id: "gp7",
         order: 7,
+        abbr: "MSw",
         name: "遊脚中期（MSw）",
         period: "遊脚期",
         ratio: "75〜87%",
         oldTerm: "遊脚中期",
         muscleAction: "前脛骨筋（足関節中間位を保ち、つま先の引っかかり防止）",
-        feature: "下腿が床と垂直になる。前脛骨筋の活動で足関節中間位を保ち、つま先の引っかかりを防ぐ。"
+        feature: "下腿が床と垂直になる。前脛骨筋の活動で足関節中間位を保ち、つま先の引っかかりを防ぐ。",
+        angles: { hip: "屈曲 25〜30°", knee: "屈曲 25〜30°", ankle: "中間位 0°" },
+        comHeight: "最高点（対側がMSt）",
+        rocker: "なし（遊脚期）",
+        examTip: "振り出した下腿が床と垂直になる相。筋活動は全体的に少ないが、前脛骨筋だけは足関節中間位（0°）を保つため働き続ける！",
+        muscles: [
+          { name: "前脛骨筋", type: "isometric", label: "等尺性", role: "足関節を中間位（0°）に保ち、つま先の引っかかりを防ぐ", site: "shin" },
+          { name: "腸腰筋", type: "concentric", label: "求心性", role: "股関節の屈曲位を軽く維持して振り出しを継続", site: "hipFlex" }
+        ],
+        pose: {
+          hipY: 103,
+          rHip: 28, rKnee: 28, rAnkle: 0,
+          lHip: -2, lKnee: 4, lAnkle: 6,
+          rArm: -4, lArm: 4
+        }
       },
       {
         id: "gp8",
         order: 8,
+        abbr: "TSw",
         name: "遊脚終期（TSw）",
         period: "遊脚期",
         ratio: "87〜100%",
         oldTerm: "減速期",
         muscleAction: "大腿四頭筋（膝伸展）・ハムストリングス（遠心性で振り出しにブレーキ）",
-        feature: "次の接地への準備。大腿四頭筋で膝を伸展させつつ、ハムストリングスが遠心性収縮で下腿の振り出しにブレーキをかける。"
+        feature: "次の接地への準備。大腿四頭筋で膝を伸展させつつ、ハムストリングスが遠心性収縮で下腿の振り出しにブレーキをかける。",
+        angles: { hip: "屈曲 30°", knee: "伸展 0〜5°", ankle: "中間位 0°" },
+        comHeight: "下降中（接地準備）",
+        rocker: "なし（次相でヒールロッカー）",
+        examTip: "国試超頻出！下腿が前に振り出されすぎないよう、ハムストリングスが『遠心性収縮』でブレーキをかける（減速期）！",
+        muscles: [
+          { name: "ハムストリングス", type: "eccentric", label: "遠心性", role: "下腿の前方振り出しにブレーキをかけ、次の接地に備える", site: "ham" },
+          { name: "大腿四頭筋", type: "concentric", label: "求心性", role: "膝関節を完全伸展近くまで伸ばし、歩幅を確保", site: "quad" },
+          { name: "前脛骨筋", type: "isometric", label: "等尺性", role: "足関節中間位を保ち、踵接地の準備をする", site: "shin" }
+        ],
+        pose: {
+          hipY: 109,
+          rHip: 30, rKnee: 6, rAnkle: 0,
+          lHip: -16, lKnee: 8, lAnkle: 6,
+          rArm: -16, lArm: 16
+        }
       }
     ];
 
     // 正常歩行 キーワード（全10問）
     const GAIT_KEYWORDS = [
-      {
-        id: "gk01",
-        term: "歩幅（ステップ長）",
-        meaning: "一方の踵接地から対側の踵接地までの距離",
-        hint: "重複歩距離の約半分。片麻痺では非対称になりやすい。"
-      },
-      {
-        id: "gk02",
-        term: "重複歩距離（ストライド長）",
-        meaning: "一方の踵接地から同側の次の踵接地までの距離",
-        hint: "左＋右の2歩分（1歩行周期で進む距離）。"
-      },
-      {
-        id: "gk03",
-        term: "歩隔（ステップ幅）",
-        meaning: "左右の踵の中心線間の横幅（正常：約5〜10cm）",
-        hint: "小脳性運動失調や高齢者では安定性を得るため広くなる（ワイドベース）。"
-      },
-      {
-        id: "gk04",
-        term: "歩行率（ケイデンス）",
-        meaning: "1分間あたりの歩数（正常：約100〜120歩/分）",
-        hint: "歩行速度＝歩幅×歩行率で決まる。"
-      },
-      {
-        id: "gk05",
-        term: "立脚期と遊脚期の比率",
-        meaning: "立脚期 60% ： 遊脚期 40%",
-        hint: "歩行速度が上がると立脚期が短くなり、走ると両脚支持期が消失する。"
-      },
-      {
-        id: "gk06",
-        term: "両脚支持期",
-        meaning: "1歩行周期に2回出現（合計約20%）",
-        hint: "荷重応答期（0〜12%）と前遊脚期（50〜62%）の2回。"
-      },
-      {
-        id: "gk07",
-        term: "重心の上下移動",
-        meaning: "約5cm（立脚中期で最高、両脚支持期で最低）",
-        hint: "サインカーブを描き、上下動を小さくしてエネルギー消費を抑える。"
-      },
-      {
-        id: "gk08",
-        term: "重心の左右移動",
-        meaning: "約4〜5cm（立脚中期に支持脚側へ最大移動）",
-        hint: "中殿筋の働きで過度な側方移動（トレンデレンブルグ）を防ぐ。"
-      },
-      {
-        id: "gk09",
-        term: "ヒールロッカー",
-        meaning: "初期接地〜荷重応答期（踵を軸に足部が回転）",
-        hint: "前脛骨筋の遠心性収縮で衝撃を吸収しながら前方へ運ぶ。"
-      },
-      {
-        id: "gk10",
-        term: "アンクルロッカー",
-        meaning: "立脚中期（足関節を軸に下腿が前方へ傾く）",
-        hint: "下腿三頭筋の遠心性収縮で下腿の前傾速度をコントロールする。"
-      }
+      { id: "gk01", term: "歩幅（ステップ長）", meaning: "一方の踵接地から対側の踵接地までの距離", hint: "重複歩距離の約半分。片麻痺では非対称になりやすい。" },
+      { id: "gk02", term: "重複歩距離（ストライド長）", meaning: "一方の踵接地から同側の次の踵接地までの距離", hint: "左＋右の2歩分（1歩行周期で進む距離）。" },
+      { id: "gk03", term: "歩隔（ステップ幅）", meaning: "左右の踵の中心線間の横幅（正常：約5〜10cm）", hint: "小脳性運動失調や高齢者では安定性を得るため広くなる（ワイドベース）。" },
+      { id: "gk04", term: "歩行率（ケイデンス）", meaning: "1分間あたりの歩数（正常：約100〜120歩/分）", hint: "歩行速度＝歩幅×歩行率で決まる。" },
+      { id: "gk05", term: "立脚期と遊脚期の比率", meaning: "立脚期 60% ： 遊脚期 40%", hint: "歩行速度が上がると立脚期が短くなり、走ると両脚支持期が消失する。" },
+      { id: "gk06", term: "両脚支持期", meaning: "1歩行周期に2回出現（合計約20%）", hint: "荷重応答期（0〜12%）と前遊脚期（50〜62%）の2回。" },
+      { id: "gk07", term: "重心の上下移動", meaning: "約5cm（立脚中期で最高、両脚支持期で最低）", hint: "サインカーブを描き、上下動を小さくしてエネルギー消費を抑える。" },
+      { id: "gk08", term: "重心の左右移動", meaning: "約4〜5cm（立脚中期に支持脚側へ最大移動）", hint: "中殿筋の働きで過度な側方移動（トレンデレンブルグ）を防ぐ。" },
+      { id: "gk09", term: "ヒールロッカー", meaning: "初期接地〜荷重応答期（踵を軸に足部が回転）", hint: "前脛骨筋の遠心性収縮で衝撃を吸収しながら前方へ運ぶ。" },
+      { id: "gk10", term: "アンクルロッカー", meaning: "立脚中期（足関節を軸に下腿が前方へ傾く）", hint: "下腿三頭筋の遠心性収縮で下腿の前傾速度をコントロールする。" }
     ];
 
     // 異常歩行（間欠性跛行を含む全11種）
     const ABNORMAL_GAITS = [
-      {
-        id: "ag01",
-        name: "鶏歩（けいほ）",
-        cause: "前脛骨筋麻痺（深腓骨神経麻痺）",
-        feature: "つま先が垂れるため、膝を高く上げて歩く",
-        hint: "下垂足（ドロップフット）を代償して、鶏のように足を大きく持ち上げる！"
-      },
-      {
-        id: "ag02",
-        name: "トレンデレンブルグ歩行",
-        cause: "中殿筋の筋力低下（上殿神経麻痺など）",
-        feature: "立脚期に「遊脚側（健側）の骨盤」が下に傾く",
-        hint: "片脚立ちで骨盤を水平に保てない。体幹を患側に傾けて代償するのは「デュシェンヌ歩行」。"
-      },
-      {
-        id: "ag03",
-        name: "分回し歩行",
-        cause: "脳卒中片麻痺（下肢の伸展共同運動）",
-        feature: "膝を伸ばしたまま、下肢を外側から大きく回して振り出す",
-        hint: "下肢伸展痙縮で膝が曲がらず足が長くなるため、外へぶん回して床との擦れを防ぐ。"
-      },
-      {
-        id: "ag04",
-        name: "小刻み・すくみ足歩行",
-        cause: "パーキンソン病（大脳基底核障害）",
-        feature: "前傾姿勢・腕振り減少・一歩目が出にくい・加速歩行",
-        hint: "体幹前傾で重心が前にずれるため、倒れないよう小刻みに早足（突進現象）になる。"
-      },
-      {
-        id: "ag05",
-        name: "酩酊歩行（失調性歩行）",
-        cause: "小脳性運動失調",
-        feature: "両足を広く開く（ワイドベース）、酔っ払いのようにふらつく",
-        hint: "歩隔を広くしてバランスを取る。視覚で代償しにくいため、開眼でも閉眼でもふらつく。"
-      },
-      {
-        id: "ag06",
-        name: "踵打ち歩行",
-        cause: "脊髄後索障害（深部感覚障害）",
-        feature: "足元を見ながら、踵を床に強く叩きつけるように歩く",
-        hint: "足の裏の感覚や位置覚がわからないため、視覚と音で接地を確認する（ロンベルグ徴候陽性）。"
-      },
-      {
-        id: "ag07",
-        name: "大殿筋歩行",
-        cause: "大殿筋麻痺（下殿神経麻痺）",
-        feature: "患側の立脚期に体幹を大きく後方へ反らす",
-        hint: "股関節伸展力が弱いため、重心を股関節の後方へ移して体幹の前倒れを防ぐ。"
-      },
-      {
-        id: "ag08",
-        name: "動揺性歩行（アヒル歩行）",
-        cause: "両側中殿筋の筋力低下（筋ジストロフィー等）",
-        feature: "左右交互に体を大きく揺らしながら歩く",
-        hint: "両側のトレンデレンブルグ徴候が起こるため、アヒルのように左右へ揺れる。"
-      },
-      {
-        id: "ag09",
-        name: "はさみ脚歩行",
-        cause: "脳性麻痺（痙直型両麻痺・股内転筋痙縮）",
-        feature: "両膝が擦れ合い、両脚が交差するように歩く",
-        hint: "股関節内転筋の強い痙縮により、振り出す足が反対側の前に交差してしまう。"
-      },
-      {
-        id: "ag10",
-        name: "疼痛性跛行",
-        cause: "変形性股・膝関節症などの疼痛",
-        feature: "痛みのある側（患側）の立脚期を極端に短くして歩く",
-        hint: "痛い足に体重をかける時間を減らすため、すぐに健側へ足を移す。"
-      },
-      {
-        id: "ag11",
-        name: "間欠性跛行",
-        cause: "腰部脊柱管狭窄症（神経性）／閉塞性動脈硬化症（血管性）",
-        feature: "一定距離歩くと下肢の痛み・しびれで歩けなくなり、休むと再び歩ける",
-        hint: "国試超頻出！『前かがみ（自転車OK）』で楽になるのが神経性、『立ち止まるだけ』で楽になるのが血管性！"
-      }
+      { id: "ag01", name: "鶏歩（けいほ）", cause: "前脛骨筋麻痺（深腓骨神経麻痺）", feature: "つま先が垂れるため、膝を高く上げて歩く", hint: "下垂足（ドロップフット）を代償して、鶏のように足を大きく持ち上げる！" },
+      { id: "ag02", name: "トレンデレンブルグ歩行", cause: "中殿筋の筋力低下（上殿神経麻痺など）", feature: "立脚期に「遊脚側（健側）の骨盤」が下に傾く", hint: "片脚立ちで骨盤を水平に保てない。体幹を患側に傾けて代償するのは「デュシェンヌ歩行」。" },
+      { id: "ag03", name: "分回し歩行", cause: "脳卒中片麻痺（下肢の伸展共同運動）", feature: "膝を伸ばしたまま、下肢を外側から大きく回して振り出す", hint: "下肢伸展痙縮で膝が曲がらず足が長くなるため、外へぶん回して床との擦れを防ぐ。" },
+      { id: "ag04", name: "小刻み・すくみ足歩行", cause: "パーキンソン病（大脳基底核障害）", feature: "前傾姿勢・腕振り減少・一歩目が出にくい・加速歩行", hint: "体幹前傾で重心が前にずれるため、倒れないよう小刻みに早足（突進現象）になる。" },
+      { id: "ag05", name: "酩酊歩行（失調性歩行）", cause: "小脳性運動失調", feature: "両足を広く開く（ワイドベース）、酔っ払いのようにふらつく", hint: "歩隔を広くしてバランスを取る。視覚で代償しにくいため、開眼でも閉眼でもふらつく。" },
+      { id: "ag06", name: "踵打ち歩行", cause: "脊髄後索障害（深部感覚障害）", feature: "足元を見ながら、踵を床に強く叩きつけるように歩く", hint: "足の裏の感覚や位置覚がわからないため、視覚と音で接地を確認する（ロンベルグ徴候陽性）。" },
+      { id: "ag07", name: "大殿筋歩行", cause: "大殿筋麻痺（下殿神経麻痺）", feature: "患側の立脚期に体幹を大きく後方へ反らす", hint: "股関節伸展力が弱いため、重心を股関節の後方へ移して体幹の前倒れを防ぐ。" },
+      { id: "ag08", name: "動揺性歩行（アヒル歩行）", cause: "両側中殿筋の筋力低下（筋ジストロフィー等）", feature: "左右交互に体を大きく揺らしながら歩く", hint: "両側のトレンデレンブルグ徴候が起こるため、アヒルのように左右へ揺れる。" },
+      { id: "ag09", name: "はさみ脚歩行", cause: "脳性麻痺（痙直型両麻痺・股内転筋痙縮）", feature: "両膝が擦れ合い、両脚が交差するように歩く", hint: "股関節内転筋の強い痙縮により、振り出す足が反対側の前に交差してしまう。" },
+      { id: "ag10", name: "疼痛性跛行", cause: "変形性股・膝関節症などの疼痛", feature: "痛みのある側（患側）の立脚期を極端に短くして歩く", hint: "痛い足に体重をかける時間を減らすため、すぐに健側へ足を移す。" },
+      { id: "ag11", name: "間欠性跛行", cause: "腰部脊柱管狭窄症（神経性）／閉塞性動脈硬化症（血管性）", feature: "一定距離歩くと下肢の痛み・しびれで歩けなくなり、休むと再び歩ける", hint: "国試超頻出！腰部脊柱管狭窄症＝前屈（自転車OK）で軽減／閉塞性動脈硬化症＝姿勢無関係で休息軽減！" }
     ];
 
     /**
@@ -1221,7 +1633,7 @@
      * =========================================================================
      */
     const STORAGE_KEYS = {
-      BEST: "ot_gait_master_best_v1",
+      BEST: "ot_gait_master_best_v2",
       WEAK_NORMAL_PHASES: "ot_gait_weak_normal_phases_v1",
       WEAK_NORMAL_KEYWORDS: "ot_gait_weak_normal_keywords_v1",
       WEAK_ABNORMAL: "ot_gait_weak_abnormal_v1"
@@ -1332,33 +1744,37 @@
      * 3. アプリ状態管理
      * =========================================================================
      */
-    let activeTab = "puzzle";       // "puzzle" | "normal" | "abnormal"
+    let activeTab = "puzzle";       // "puzzle" | "normal" | "abnormal" | "atlas"
     let puzzleDiff = "easy";        // "easy" | "hard"
     let normalMode = "phases";      // "phases" | "keywords"
     let abnormalMode = "cause";     // "cause" | "feature"
-    let lastSessionConfig = null;   // リトライ用設定
+    let lastSessionConfig = null;
 
     // 共通タイマー
     let timerInterval = null;
     let startTime = 0;
     let elapsedSec = 0;
 
+    // コマ送り図鑑状態
+    let atlasIndex = 0;
+    let atlasAutoTimer = null;
+
     // 8相パズル状態
     let puzzleState = {
-      choices: [], // { id, phase, used }
-      slots: Array(8).fill(null), // choiceId or null
+      choices: [],
+      slots: Array(8).fill(null),
       missCount: 0,
       isLocked: false
     };
 
-    // スピード・マッチング共通状態（正常歩行・異常歩行で共用）
+    // マッチング状態
     let matchState = {
-      category: "normal",   // "normal" | "abnormal"
-      subMode: "phases",    // "phases" | "keywords" | "cause" | "feature"
+      category: "normal",
+      subMode: "phases",
       weakStorageKey: "",
       bestTimeKey: "",
       isWeakMode: false,
-      playedItems: [],      // 標準化アイテム配列 { id, left, right, hint, fullData }
+      playedItems: [],
       queue: [],
       currentBatch: [],
       selectedLeft: null,
@@ -1384,31 +1800,46 @@
       }
     }
 
+    function stopAtlasAuto() {
+      if (atlasAutoTimer) {
+        clearInterval(atlasAutoTimer);
+        atlasAutoTimer = null;
+      }
+      const btn = document.getElementById("atlasPlayBtn");
+      if (btn) {
+        btn.classList.remove("playing");
+        btn.textContent = "▶ 自動再生";
+      }
+    }
+
     /**
      * =========================================================================
      * 4. スタート画面描画
      * =========================================================================
      */
     function renderStartScreen() {
-      // タブ表示
+      if (activeTab !== "atlas") {
+        stopAtlasAuto();
+      }
+
       document.getElementById("tabPuzzleBtn").classList.toggle("active", activeTab === "puzzle");
       document.getElementById("tabNormalBtn").classList.toggle("active", activeTab === "normal");
       document.getElementById("tabAbnormalBtn").classList.toggle("active", activeTab === "abnormal");
+      document.getElementById("tabAtlasBtn").classList.toggle("active", activeTab === "atlas");
 
       document.getElementById("panelPuzzle").classList.toggle("active", activeTab === "puzzle");
       document.getElementById("panelNormal").classList.toggle("active", activeTab === "normal");
       document.getElementById("panelAbnormal").classList.toggle("active", activeTab === "abnormal");
+      document.getElementById("panelAtlas").classList.toggle("active", activeTab === "atlas");
 
       const bests = getBestTimes();
 
-      // タブ1：8相パズル ベストタイム
+      // タブ1：ベストタイム
       const pBest = bests[`puzzle_${puzzleDiff}`];
       document.getElementById("puzzleBestRecord").textContent =
-        typeof pBest === "number"
-          ? `この難易度のベストタイム：${pBest.toFixed(1)}秒`
-          : "まだクリア記録がありません";
+        typeof pBest === "number" ? `この難易度のベストタイム：${pBest.toFixed(1)}秒` : "まだクリア記録がありません";
 
-      // タブ2：正常歩行 弱点＆ベストタイム
+      // タブ2：弱点＆ベストタイム
       const normalWeakKey = normalMode === "phases"
         ? STORAGE_KEYS.WEAK_NORMAL_PHASES
         : STORAGE_KEYS.WEAK_NORMAL_KEYWORDS;
@@ -1427,11 +1858,9 @@
 
       const nBest = bests[`normal_${normalMode}`];
       document.getElementById("normalBestRecord").textContent =
-        typeof nBest === "number"
-          ? `このモードのベストタイム：${nBest.toFixed(1)}秒`
-          : "まだクリア記録がありません";
+        typeof nBest === "number" ? `このコースのベストタイム：${nBest.toFixed(1)}秒` : "まだクリア記録がありません";
 
-      // タブ3：異常歩行 弱点＆ベストタイム
+      // タブ3：弱点＆ベストタイム
       const abnormalValidIds = ABNORMAL_GAITS.map(x => x.id);
       const abnormalWeakIds = getWeakList(STORAGE_KEYS.WEAK_ABNORMAL).filter(id => abnormalValidIds.includes(id));
 
@@ -1445,14 +1874,245 @@
 
       const aBest = bests[`abnormal_${abnormalMode}`];
       document.getElementById("abnormalBestRecord").textContent =
-        typeof aBest === "number"
-          ? `このモードのベストタイム：${aBest.toFixed(1)}秒`
-          : "まだクリア記録がありません";
+        typeof aBest === "number" ? `このモードのベストタイム：${aBest.toFixed(1)}秒` : "まだクリア記録がありません";
+
+      // タブ4：図鑑描画
+      if (activeTab === "atlas") {
+        renderAtlas();
+      }
     }
 
     /**
      * =========================================================================
-     * 5. タブ1：歩行8相 順番パズル
+     * 5. タブ4：👀 コマ送り図鑑（SVG棒人間＋筋活動マッピング）
+     * =========================================================================
+     */
+    function degToRad(deg) {
+      return (deg * Math.PI) / 180;
+    }
+
+    function calcLegPoints(hipX, hipY, hipDeg, kneeFlexDeg, ankleDorsiDeg) {
+      const thighLen = 44;
+      const shankLen = 42;
+      const footLen = 20;
+
+      // 大腿（鉛直下向きを0°、前方へ＋）
+      const tRad = degToRad(hipDeg);
+      const kneeX = hipX + thighLen * Math.sin(tRad);
+      const kneeY = hipY + thighLen * Math.cos(tRad);
+
+      // 下腿（膝屈曲は後方へ曲がるため hipDeg - kneeFlexDeg）
+      const sRad = degToRad(hipDeg - kneeFlexDeg);
+      const ankleX = kneeX + shankLen * Math.sin(sRad);
+      const ankleY = kneeY + shankLen * Math.cos(sRad);
+
+      // 足部（下腿に対して前方90°が中間位。背屈＋、底屈−）
+      const fRad = degToRad(hipDeg - kneeFlexDeg + 90 + ankleDorsiDeg);
+      const toeX = ankleX + footLen * Math.sin(fRad);
+      const toeY = ankleY + footLen * Math.cos(fRad);
+
+      // 踵側にも少し伸ばす
+      const heelX = ankleX - 6 * Math.sin(fRad);
+      const heelY = ankleY - 6 * Math.cos(fRad);
+
+      return { hipX, hipY, kneeX, kneeY, ankleX, ankleY, toeX, toeY, heelX, heelY };
+    }
+
+    function getMuscleMarkerCoord(leg, site) {
+      // 観察側（右脚）の部位ごとの座標を算出
+      const midThighX = (leg.hipX + leg.kneeX) / 2;
+      const midThighY = (leg.hipY + leg.kneeY) / 2;
+      const midShankX = (leg.kneeX + leg.ankleX) / 2;
+      const midShankY = (leg.kneeY + leg.ankleY) / 2;
+
+      switch (site) {
+        case "glute":   return { x: leg.hipX - 11, y: leg.hipY - 2 };
+        case "hipFlex": return { x: leg.hipX + 10, y: leg.hipY + 5 };
+        case "quad":    return { x: midThighX + 8, y: midThighY - 2 };
+        case "ham":     return { x: midThighX - 9, y: midThighY + 2 };
+        case "shin":    return { x: midShankX + 8, y: midShankY };
+        case "calf":    return { x: midShankX - 9, y: midShankY };
+        default:        return { x: midThighX, y: midThighY };
+      }
+    }
+
+    function getContractionColor(type) {
+      if (type === "concentric") return "#dc2626";
+      if (type === "eccentric") return "#2563eb";
+      return "#7c3aed";
+    }
+
+    function renderAtlasSvg(phase) {
+      const svg = document.getElementById("gaitSvg");
+      const p = phase.pose;
+      const hipX = 160;
+      const hipY = p.hipY;
+
+      // 頭・体幹
+      const shoulderX = hipX + 4;
+      const shoulderY = hipY - 52;
+      const headX = shoulderX + 2;
+      const headY = shoulderY - 18;
+
+      // 右脚（観察側）と左脚（対側）
+      const rLeg = calcLegPoints(hipX, hipY, p.rHip, p.rKnee, p.rAnkle);
+      const lLeg = calcLegPoints(hipX, hipY, p.lHip, p.lKnee, p.lAnkle);
+
+      // 腕
+      const armLen = 36;
+      const rHandX = shoulderX + armLen * Math.sin(degToRad(p.rArm));
+      const rHandY = shoulderY + armLen * Math.cos(degToRad(p.rArm));
+      const lHandX = shoulderX + armLen * Math.sin(degToRad(p.lArm));
+      const lHandY = shoulderY + armLen * Math.cos(degToRad(p.lArm));
+
+      // 重心（COM）：骨盤の少し上
+      const comX = hipX + 2;
+      const comY = hipY - 8;
+
+      // 筋活動ハイライトマーカー生成
+      const markersSvg = phase.muscles.map(m => {
+        const pt = getMuscleMarkerCoord(rLeg, m.site);
+        const col = getContractionColor(m.type);
+        return `
+          <g>
+            <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="11" fill="${col}" opacity="0.22" class="muscle-pulse" />
+            <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="5.5" fill="${col}" stroke="#ffffff" stroke-width="1.5" />
+          </g>
+        `;
+      }).join("");
+
+      const isStance = phase.period === "立脚期";
+      const badgeColor = isStance ? "#2563eb" : "#059669";
+      const badgeBg = isStance ? "#eff6ff" : "#ecfdf5";
+
+      svg.innerHTML = `
+        <!-- 進行方向ラベル -->
+        <text x="296" y="22" text-anchor="end" font-size="10" font-weight="800" fill="#64748b">進行方向 ➔</text>
+
+        <!-- 左上フェーズバッジ -->
+        <rect x="10" y="10" width="122" height="24" rx="12" fill="${badgeBg}" stroke="${badgeColor}" stroke-width="1" />
+        <text x="71" y="26" text-anchor="middle" font-size="11" font-weight="900" fill="${badgeColor}">
+          ${phase.order}. ${phase.abbr}（${phase.ratio}）
+        </text>
+
+        <!-- 重心（COM）上下変動ガイドライン -->
+        <line x1="20" y1="94" x2="300" y2="94" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.55" />
+        <text x="24" y="90" font-size="8.5" font-weight="700" fill="#b45309">重心 最高(MSt)</text>
+        <line x1="20" y1="110" x2="300" y2="110" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.55" />
+        <text x="24" y="120" font-size="8.5" font-weight="700" fill="#b45309">重心 最低(LR/PSw)</text>
+
+        <!-- 床面 -->
+        <line x1="16" y1="200" x2="304" y2="200" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+
+        <!-- 対側（左腕・左脚：薄いグレー） -->
+        <line x1="${shoulderX}" y1="${shoulderY}" x2="${lHandX.toFixed(1)}" y2="${lHandY.toFixed(1)}" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round" />
+        <line x1="${lLeg.hipX}" y1="${lLeg.hipY}" x2="${lLeg.kneeX.toFixed(1)}" y2="${lLeg.kneeY.toFixed(1)}" stroke="#cbd5e1" stroke-width="6.5" stroke-linecap="round" />
+        <line x1="${lLeg.kneeX.toFixed(1)}" y1="${lLeg.kneeY.toFixed(1)}" x2="${lLeg.ankleX.toFixed(1)}" y2="${lLeg.ankleY.toFixed(1)}" stroke="#cbd5e1" stroke-width="5.5" stroke-linecap="round" />
+        <line x1="${lLeg.heelX.toFixed(1)}" y1="${lLeg.heelY.toFixed(1)}" x2="${lLeg.toeX.toFixed(1)}" y2="${lLeg.toeY.toFixed(1)}" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round" />
+
+        <!-- 体幹・頭 -->
+        <line x1="${hipX}" y1="${hipY}" x2="${shoulderX}" y2="${shoulderY}" stroke="#334155" stroke-width="7.5" stroke-linecap="round" />
+        <circle cx="${headX}" cy="${headY}" r="12" fill="#334155" />
+
+        <!-- 観察側（右脚：濃いネイビー太線） -->
+        <line x1="${rLeg.hipX}" y1="${rLeg.hipY}" x2="${rLeg.kneeX.toFixed(1)}" y2="${rLeg.kneeY.toFixed(1)}" stroke="#1e293b" stroke-width="7.5" stroke-linecap="round" />
+        <line x1="${rLeg.kneeX.toFixed(1)}" y1="${rLeg.kneeY.toFixed(1)}" x2="${rLeg.ankleX.toFixed(1)}" y2="${rLeg.ankleY.toFixed(1)}" stroke="#1e293b" stroke-width="6.5" stroke-linecap="round" />
+        <line x1="${rLeg.heelX.toFixed(1)}" y1="${rLeg.heelY.toFixed(1)}" x2="${rLeg.toeX.toFixed(1)}" y2="${rLeg.toeY.toFixed(1)}" stroke="#1e293b" stroke-width="5.5" stroke-linecap="round" />
+
+        <!-- 関節ドット（股・膝・足） -->
+        <circle cx="${rLeg.kneeX.toFixed(1)}" cy="${rLeg.kneeY.toFixed(1)}" r="3.5" fill="#ffffff" stroke="#1e293b" stroke-width="2" />
+        <circle cx="${rLeg.ankleX.toFixed(1)}" cy="${rLeg.ankleY.toFixed(1)}" r="3" fill="#ffffff" stroke="#1e293b" stroke-width="2" />
+
+        <!-- 右腕 -->
+        <line x1="${shoulderX}" y1="${shoulderY}" x2="${rHandX.toFixed(1)}" y2="${rHandY.toFixed(1)}" stroke="#475569" stroke-width="5" stroke-linecap="round" />
+
+        <!-- 重心（COM）マーカー -->
+        <circle cx="${comX}" cy="${comY}" r="6.5" fill="#eab308" stroke="#854d0e" stroke-width="2" />
+        <text x="${comX + 11}" y="${comY + 3}" font-size="8.5" font-weight="900" fill="#854d0e">COM</text>
+
+        <!-- 観察側（右脚）の筋活動ハイライトマーカー -->
+        ${markersSvg}
+
+        <!-- 脚の色説明 -->
+        <text x="160" y="214" text-anchor="middle" font-size="9.5" font-weight="700" fill="#64748b">
+          ■ 濃紺：観察側（右脚） ／ ■ 薄灰：対側（左脚）
+        </text>
+      `;
+    }
+
+    function renderAtlas() {
+      const phase = GAIT_PHASES[atlasIndex];
+
+      // 1〜8ステップボタン描画
+      const dotsEl = document.getElementById("atlasStepDots");
+      dotsEl.innerHTML = "";
+      GAIT_PHASES.forEach((p, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        const periodCls = p.period === "立脚期" ? "stance" : "swing";
+        btn.className = `step-dot-btn ${periodCls}${idx === atlasIndex ? " active" : ""}`;
+        btn.innerHTML = `<span>${p.order}</span><span class="step-dot-abbr">${p.abbr}</span>`;
+        btn.onclick = () => {
+          playSound("tap");
+          stopAtlasAuto();
+          atlasIndex = idx;
+          renderAtlas();
+        };
+        dotsEl.appendChild(btn);
+      });
+
+      // SVG描画
+      renderAtlasSvg(phase);
+
+      // 詳細カード描画
+      const periodCls = phase.period === "立脚期" ? "stance" : "swing";
+      const musclesHtml = phase.muscles.map(m => `
+        <div class="muscle-row">
+          <div class="muscle-row-top">
+            <span class="muscle-name">${m.name}</span>
+            <span class="contraction-badge ${m.type}">${m.label}収縮</span>
+          </div>
+          <div class="muscle-role">${m.role}</div>
+        </div>
+      `).join("");
+
+      document.getElementById("atlasDetailCard").innerHTML = `
+        <div class="atlas-phase-header">
+          <div>
+            <h2 class="atlas-phase-title">${phase.order}. ${phase.name}</h2>
+            <div class="atlas-phase-sub">旧用語：${phase.oldTerm} ／ 歩行周期：${phase.ratio}</div>
+          </div>
+          <span class="period-pill ${periodCls}">${phase.period}</span>
+        </div>
+
+        <div>
+          <p class="section-title" style="margin-bottom:6px;">💪 主動作筋と収縮様式（観察側）</p>
+          <div class="muscle-list">${musclesHtml}</div>
+        </div>
+
+        <div>
+          <p class="section-title" style="margin-bottom:6px;">📐 関節角度の目安</p>
+          <div class="angle-grid">
+            <div class="angle-box"><span class="angle-label">股関節</span><span class="angle-val">${phase.angles.hip}</span></div>
+            <div class="angle-box"><span class="angle-label">膝関節</span><span class="angle-val">${phase.angles.knee}</span></div>
+            <div class="angle-box"><span class="angle-label">足関節</span><span class="angle-val">${phase.angles.ankle}</span></div>
+          </div>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-box"><strong>🟡 重心（COM）の高さ</strong>${phase.comHeight}</div>
+          <div class="meta-box"><strong>⚙️ ロッカー機能</strong>${phase.rocker}</div>
+        </div>
+
+        <div class="exam-tip-box">
+          💡 <strong>国試ワンポイント：</strong>${phase.examTip}
+        </div>
+      `;
+    }
+
+    /**
+     * =========================================================================
+     * 6. タブ1：歩行8相 順番パズル
      * =========================================================================
      */
     function startPuzzleGame() {
@@ -1525,14 +2185,10 @@
           renderPuzzleBoard();
         };
 
-        if (isStance) {
-          stanceWrap.appendChild(btn);
-        } else {
-          swingWrap.appendChild(btn);
-        }
+        if (isStance) stanceWrap.appendChild(btn);
+        else swingWrap.appendChild(btn);
       }
 
-      // 選択肢カード描画
       const grid = document.getElementById("puzzleChoicesGrid");
       grid.innerHTML = "";
       puzzleState.choices.forEach(c => {
@@ -1557,7 +2213,6 @@
         grid.appendChild(btn);
       });
 
-      // 判定ボタン状態
       const emptyCount = puzzleState.slots.filter(s => s === null).length;
       const submitBtn = document.getElementById("submitPuzzleBtn");
       if (emptyCount === 0) {
@@ -1605,10 +2260,7 @@
         elapsedSec = (performance.now() - startTime) / 1000;
         playSound("clear");
         showPuzzleFeedback("success", "🎉 正解！正常歩行8相を完璧に並べ替えました！");
-
-        setTimeout(() => {
-          finishPuzzleGame();
-        }, 650);
+        setTimeout(finishPuzzleGame, 650);
       } else {
         puzzleState.isLocked = true;
         puzzleState.missCount++;
@@ -1632,7 +2284,6 @@
     function finishPuzzleGame() {
       const isNewRecord = updateBestTime(`puzzle_${puzzleDiff}`, elapsedSec);
 
-      // タイム・ミス回数によるS/A/Bランク判定
       let rank = "B";
       let subText = "粘り強くクリア！全8相の流れを確認してタイム短縮を目指そう！";
       if (puzzleState.missCount === 0 && elapsedSec < 25.0) {
@@ -1643,7 +2294,6 @@
         subText = "素晴らしい！しっかり歩行周期の流れがつかめています！";
       }
 
-      // グループ学習お題（8相からランダム）
       const topic = GAIT_PHASES[Math.floor(Math.random() * GAIT_PHASES.length)];
 
       renderResultScreen({
@@ -1667,7 +2317,7 @@
             <div class="review-name">
               <span>${p.order}. ${p.name}</span>
               <span class="mini-tag ${p.period === "立脚期" ? "stance" : "swing"}">${p.period} ${p.ratio}</span>
-              <span style="font-size:0.72rem; color:var(--muted); font-weight:700;">旧：${p.oldTerm}</span>
+              <span style="font-size:0.71rem; color:var(--muted); font-weight:700;">旧：${p.oldTerm}</span>
             </div>
             <div style="color:var(--text);">${p.feature}</div>
           </div>
@@ -1677,7 +2327,7 @@
 
     /**
      * =========================================================================
-     * 6. タブ2・3：スピード・マッチング（正常歩行・異常歩行 共通エンジン）
+     * 7. タブ2・3：スピード・マッチング（正常歩行・異常歩行 共通エンジン）
      * =========================================================================
      */
     function buildMatchItems(category, subMode) {
@@ -1718,7 +2368,6 @@
         }));
       }
 
-      // 異常歩行（cause / feature）
       return ABNORMAL_GAITS.map(a => ({
         id: a.id,
         left: a.name,
@@ -1727,7 +2376,7 @@
         topicName: a.name,
         topicDetailHtml: `
           <div><strong>主な原因・疾患：</strong>${a.cause}</div>
-          <div><strong>特徴・パターン：</strong>${a.feature}</div>
+          <div><strong>特徴・歩き方：</strong>${a.feature}</div>
           <div style="margin-top:4px; color:var(--primary);"><strong>💡 国試ポイント：</strong>${a.hint}</div>
         `,
         reviewDetailHtml: `
@@ -1758,6 +2407,7 @@
         }
       }
 
+      if (matchState.hintTimer) clearTimeout(matchState.hintTimer);
       matchState = {
         category,
         subMode,
@@ -1777,7 +2427,6 @@
         hintTimer: null
       };
 
-      // カラムヘッダー設定
       if (category === "normal" && subMode === "phases") {
         document.getElementById("leftColHeader").textContent = "歩行の相";
         document.getElementById("rightColHeader").textContent = "主動作筋・収縮様式";
@@ -1787,7 +2436,7 @@
       } else {
         document.getElementById("leftColHeader").textContent = "異常歩行";
         document.getElementById("rightColHeader").textContent =
-          subMode === "cause" ? "主な原因・疾患" : "特徴・歩行パターン";
+          subMode === "cause" ? "主な原因・疾患" : "特徴・歩き方";
       }
 
       document.getElementById("matchCombo").textContent = "0";
@@ -1812,20 +2461,20 @@
         return;
       }
 
-      // 同一解答テキストが1バッチ内でなるべく被らないように最大5枚抽出
+      const batchSize = matchState.queue.length === 8 ? 4 : 5;
       const batch = [];
       const usedRights = new Set();
       const leftover = [];
 
       for (const item of matchState.queue) {
-        if (batch.length < 5 && !usedRights.has(item.right)) {
+        if (batch.length < batchSize && !usedRights.has(item.right)) {
           batch.push(item);
           usedRights.add(item.right);
         } else {
           leftover.push(item);
         }
       }
-      while (batch.length < 5 && leftover.length > 0) {
+      while (batch.length < batchSize && leftover.length > 0) {
         batch.push(leftover.shift());
       }
 
@@ -1904,12 +2553,9 @@
         r.el.classList.add("correct");
 
         matchState.combo++;
-        if (matchState.combo > matchState.maxCombo) {
-          matchState.maxCombo = matchState.combo;
-        }
+        if (matchState.combo > matchState.maxCombo) matchState.maxCombo = matchState.combo;
         document.getElementById("matchCombo").textContent = String(matchState.combo);
 
-        // 弱点復習モードで今回ノーミス正解なら自動解除
         if (matchState.isWeakMode && !matchState.missedSet.has(l.item.id)) {
           removeWeakItem(matchState.weakStorageKey, l.item.id);
         }
@@ -1978,7 +2624,7 @@
       const topic = topicPool[Math.floor(Math.random() * topicPool.length)];
 
       const topicInstruction = matchState.category === "abnormal"
-        ? "この異常歩行を班のメンバーの前で実演し、原因となる筋・疾患を1分で説明してみよう！"
+        ? "班の前で実際に歩いて実演し、麻痺筋・疾患を1分で説明しよう！"
         : "この相（または用語）の動きと筋活動を、自分の体を使って班のメンバーに1分で説明してみよう！";
 
       const reviewHtml = missedItems.length > 0
@@ -2008,22 +2654,13 @@
 
     /**
      * =========================================================================
-     * 7. 共通リザルト画面描画
+     * 8. 共通リザルト画面
      * =========================================================================
      */
     function renderResultScreen({
-      rank,
-      subText,
-      timeSec,
-      misses,
-      isNewRecord,
-      thirdLabel,
-      thirdValue,
-      topicTitle,
-      topicInstruction,
-      topicAnswerHtml,
-      reviewTitle,
-      reviewHtml
+      rank, subText, timeSec, misses, isNewRecord,
+      thirdLabel, thirdValue, topicTitle, topicInstruction,
+      topicAnswerHtml, reviewTitle, reviewHtml
     }) {
       document.getElementById("newRecordBadge").style.display = isNewRecord ? "inline-block" : "none";
       const rankEl = document.getElementById("rankBadge");
@@ -2050,7 +2687,7 @@
 
     /**
      * =========================================================================
-     * 8. イベント登録・初期化
+     * 9. イベント登録・初期化
      * =========================================================================
      */
     document.getElementById("soundToggle").onclick = (e) => {
@@ -2059,22 +2696,11 @@
       if (soundOn) playSound("tap");
     };
 
-    // 3タブ切替
-    document.getElementById("tabPuzzleBtn").onclick = () => {
-      playSound("tap");
-      activeTab = "puzzle";
-      renderStartScreen();
-    };
-    document.getElementById("tabNormalBtn").onclick = () => {
-      playSound("tap");
-      activeTab = "normal";
-      renderStartScreen();
-    };
-    document.getElementById("tabAbnormalBtn").onclick = () => {
-      playSound("tap");
-      activeTab = "abnormal";
-      renderStartScreen();
-    };
+    // 4タブ切替
+    document.getElementById("tabPuzzleBtn").onclick = () => { playSound("tap"); activeTab = "puzzle"; renderStartScreen(); };
+    document.getElementById("tabNormalBtn").onclick = () => { playSound("tap"); activeTab = "normal"; renderStartScreen(); };
+    document.getElementById("tabAbnormalBtn").onclick = () => { playSound("tap"); activeTab = "abnormal"; renderStartScreen(); };
+    document.getElementById("tabAtlasBtn").onclick = () => { playSound("tap"); activeTab = "atlas"; renderStartScreen(); };
 
     // タブ1：難易度切替
     document.querySelectorAll(".puzzle-diff-btn").forEach(btn => {
@@ -2087,7 +2713,7 @@
       };
     });
 
-    // タブ2：正常歩行モード切替
+    // タブ2：正常歩行コース切替
     document.querySelectorAll(".normal-mode-btn").forEach(btn => {
       btn.onclick = () => {
         playSound("tap");
@@ -2108,6 +2734,36 @@
         renderStartScreen();
       };
     });
+
+    // タブ4：コマ送り図鑑コントロール
+    document.getElementById("atlasPrevBtn").onclick = () => {
+      playSound("tap");
+      stopAtlasAuto();
+      atlasIndex = (atlasIndex - 1 + GAIT_PHASES.length) % GAIT_PHASES.length;
+      renderAtlas();
+    };
+
+    document.getElementById("atlasNextBtn").onclick = () => {
+      playSound("tap");
+      stopAtlasAuto();
+      atlasIndex = (atlasIndex + 1) % GAIT_PHASES.length;
+      renderAtlas();
+    };
+
+    document.getElementById("atlasPlayBtn").onclick = () => {
+      playSound("tap");
+      if (atlasAutoTimer) {
+        stopAtlasAuto();
+      } else {
+        const btn = document.getElementById("atlasPlayBtn");
+        btn.classList.add("playing");
+        btn.textContent = "⏸ 停止";
+        atlasAutoTimer = setInterval(() => {
+          atlasIndex = (atlasIndex + 1) % GAIT_PHASES.length;
+          renderAtlas();
+        }, 1800);
+      }
+    };
 
     // 各スタートボタン
     document.getElementById("startPuzzleBtn").onclick = () => startPuzzleGame();
@@ -2154,7 +2810,6 @@
       if (lastSessionConfig.type === "puzzle") {
         startPuzzleGame();
       } else {
-        // 弱点モードで全解除された場合はタイトルへ
         if (lastSessionConfig.isWeakMode) {
           const weakKey = lastSessionConfig.category === "abnormal"
             ? STORAGE_KEYS.WEAK_ABNORMAL

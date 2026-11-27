@@ -22,6 +22,11 @@
       --accent: #ea580c;
       --accent-light: #fff7ed;
 
+      --gold: #b45309;
+      --gold-dark: #92400e;
+      --gold-bg: #fef3c7;
+      --gold-border: #f59e0b;
+
       --success: #16a34a;
       --success-light: #dcfce7;
       --danger: #dc2626;
@@ -721,7 +726,6 @@
       animation: pulseRing 1.5s infinite ease-in-out;
     }
 
-    /* 1〜8ステップボタン */
     .step-dots-grid {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
@@ -776,7 +780,6 @@
       opacity: 0.9;
     }
 
-    /* コマ送り操作バー */
     .atlas-controls {
       display: grid;
       grid-template-columns: 1fr 1.35fr 1fr;
@@ -811,7 +814,6 @@
       border-color: var(--accent);
     }
 
-    /* 国試ポイント詳細カード */
     .atlas-detail-card {
       background: var(--card);
       border-radius: 16px;
@@ -1134,6 +1136,432 @@
     }
 
     /* ==========================================
+       【共通モジュール】国家試験過去問モード（kokushi-*）
+       他アプリへコピペ横展開可能な独立スタイル
+       ========================================== */
+    .kokushi-banner-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 2px solid #f59e0b;
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      color: #92400e;
+      font-size: 0.88rem;
+      font-weight: 900;
+      box-shadow: 0 3px 10px rgba(217, 119, 6, 0.18);
+      transition: transform 0.12s, box-shadow 0.15s;
+      text-align: left;
+    }
+
+    .kokushi-banner-btn:active {
+      transform: scale(0.98);
+    }
+
+    .kokushi-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .kokushi-banner-sub {
+      font-size: 0.74rem;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.78);
+      color: #b45309;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid #fcd34d;
+    }
+
+    .kokushi-hero-card {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 2px solid #f59e0b;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .kokushi-hero-title {
+      font-size: 1.08rem;
+      font-weight: 900;
+      color: #92400e;
+      margin: 0;
+    }
+
+    .kokushi-progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #92400e;
+    }
+
+    .kokushi-progress-track {
+      width: 100%;
+      height: 11px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #fcd34d;
+    }
+
+    .kokushi-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .kokushi-course-btn {
+      width: 100%;
+      background: var(--card);
+      border: 2px solid #e2e8f0;
+      border-radius: 13px;
+      padding: 14px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    }
+
+    .kokushi-course-btn:active:not(:disabled) {
+      transform: scale(0.98);
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .kokushi-course-btn.primary-course {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .kokushi-course-btn.weak-course {
+      border-color: #f97316;
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .kokushi-course-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      background: #f1f5f9;
+      border-color: #e2e8f0;
+    }
+
+    .kokushi-course-main {
+      font-size: 0.94rem;
+      font-weight: 900;
+      color: var(--text);
+      display: block;
+    }
+
+    .kokushi-course-btn.weak-course .kokushi-course-main {
+      color: #c2410c;
+    }
+
+    .kokushi-course-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .kokushi-play-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 13px;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .kokushi-meta-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .kokushi-meta-badge {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      padding: 3px 9px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
+    .kokushi-multi-badge {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+      padding: 3px 9px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
+
+    .kokushi-question-card {
+      background: var(--card);
+      border: 1px solid #e2e8f0;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .kokushi-question-text {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .kokushi-graph-wrap {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 8px 6px 4px;
+    }
+
+    .kokushi-graph-wrap svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .kokushi-choices-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .kokushi-choice-btn {
+      width: 100%;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text);
+      font-size: 0.87rem;
+      font-weight: 700;
+      line-height: 1.42;
+    }
+
+    .kokushi-choice-btn:active:not(:disabled) {
+      transform: scale(0.985);
+    }
+
+    .kokushi-choice-btn:disabled {
+      cursor: default;
+    }
+
+    .kokushi-choice-num {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #cbd5e1;
+    }
+
+    .kokushi-choice-btn.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .kokushi-choice-btn.selected .kokushi-choice-num {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .kokushi-choice-btn.is-correct {
+      border-color: var(--success);
+      background: var(--success-light);
+      color: #166534;
+    }
+
+    .kokushi-choice-btn.is-correct .kokushi-choice-num {
+      background: var(--success);
+      color: #ffffff;
+      border-color: var(--success);
+    }
+
+    .kokushi-choice-btn.is-wrong {
+      border-color: var(--danger);
+      background: var(--danger-light);
+      color: #991b1b;
+    }
+
+    .kokushi-choice-btn.is-wrong .kokushi-choice-num {
+      background: var(--danger);
+      color: #ffffff;
+      border-color: var(--danger);
+    }
+
+    .kokushi-explain-card {
+      background: var(--card);
+      border-radius: 15px;
+      padding: 15px;
+      border: 2px solid #e2e8f0;
+      display: none;
+      flex-direction: column;
+      gap: 11px;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
+    }
+
+    .kokushi-explain-card.open {
+      display: flex;
+    }
+
+    .kokushi-explain-card.ok {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+
+    .kokushi-explain-card.ng {
+      border-color: #fca5a5;
+      background: #fef2f2;
+    }
+
+    .kokushi-judge-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .kokushi-judge-title.ok { color: #15803d; }
+    .kokushi-judge-title.ng { color: #b91c1c; }
+
+    .kokushi-point-box {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.83rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .kokushi-notes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.77rem;
+      line-height: 1.48;
+    }
+
+    .kokushi-note-row {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      padding-bottom: 5px;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .kokushi-note-row:last-child {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .kokushi-note-num {
+      font-weight: 900;
+      color: var(--muted);
+      flex-shrink: 0;
+      min-width: 18px;
+    }
+
+    .kokushi-note-row.ans-row {
+      color: #15803d;
+      font-weight: 800;
+    }
+
+    .kokushi-next-btn {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.96rem;
+      font-weight: 900;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 3px 8px rgba(180, 83, 9, 0.28);
+    }
+
+    .kokushi-next-btn:active {
+      transform: scale(0.98);
+    }
+
+    .kokushi-miss-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 10px 0;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .kokushi-miss-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .kokushi-miss-meta {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #b45309;
+      margin-bottom: 2px;
+    }
+
+    .kokushi-miss-q {
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    /* ==========================================
        フッター
        ========================================== */
     footer {
@@ -1152,15 +1580,25 @@
     <header>
       <div class="header-title-wrap">
         <h1>🚶 正常・異常歩行マスター</h1>
-        <span class="header-sub">OT 1・2年次 運動学・評価学（4モード完結）</span>
+        <span class="header-sub">OT 1・2年次 運動学・評価学（国試過去問20問収録）</span>
       </div>
       <button id="soundToggle" class="sound-btn" type="button">🔊 音 ON</button>
     </header>
 
     <!-- ==========================================
-         1. スタート画面（1段4等分タブ）
+         1. スタート画面（国試バナー ＋ 1段4等分タブ）
          ========================================== -->
     <section id="startScreen" class="screen active">
+      <!-- 【共通モジュール入口】国家試験過去問バナー -->
+      <button id="kokushiEntryBtn" class="kokushi-banner-btn" type="button">
+        <span class="kokushi-banner-left">
+          <span>🎓 国家試験過去問に挑戦</span>
+          <span id="kokushiEntryBadge" class="kokushi-banner-sub">クリア済 0 / 20問</span>
+        </span>
+        <span>▶</span>
+      </button>
+
+      <!-- 4等分タブナビゲーション -->
       <nav class="game-tabs" aria-label="学習モード切替">
         <button id="tabPuzzleBtn" class="game-tab-btn active" type="button">
           <span class="tab-icon">🔄</span>
@@ -1254,7 +1692,6 @@
       <!-- タブ4パネル：👀 コマ送り図鑑（歩行周期コマ送り・筋活動マッピング） -->
       <div id="panelAtlas" class="tab-panel">
         <div class="atlas-stage-card">
-          <!-- 凡例 -->
           <div class="atlas-legend">
             <span class="legend-item"><span class="legend-dot" style="background:var(--concentric);"></span>求心性</span>
             <span class="legend-item"><span class="legend-dot" style="background:var(--eccentric);"></span>遠心性</span>
@@ -1262,15 +1699,12 @@
             <span class="legend-item"><span class="legend-dot" style="background:#eab308; border:1px solid #a16207;"></span>重心(COM)</span>
           </div>
 
-          <!-- SVG歩行アニメーションエリア -->
           <div class="svg-wrap">
             <svg id="gaitSvg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="歩行周期の姿勢と筋活動イラスト"></svg>
           </div>
 
-          <!-- 1〜8 ステップジャンプボタン -->
           <div id="atlasStepDots" class="step-dots-grid"></div>
 
-          <!-- コマ送り・自動再生コントロール -->
           <div class="atlas-controls">
             <button id="atlasPrevBtn" class="ctrl-btn" type="button">◀ 前へ</button>
             <button id="atlasPlayBtn" class="ctrl-btn play-btn" type="button">▶ 自動再生</button>
@@ -1278,7 +1712,6 @@
           </div>
         </div>
 
-        <!-- 国試ポイント詳細カード -->
         <div id="atlasDetailCard" class="atlas-detail-card"></div>
       </div>
     </section>
@@ -1347,7 +1780,7 @@
     </section>
 
     <!-- ==========================================
-         4. 共通リザルト画面
+         4. 共通リザルト画面（基礎学習用）
          ========================================== -->
     <section id="resultScreen" class="screen">
       <div class="result-hero">
@@ -1379,6 +1812,114 @@
       <button id="backHomeBtn" class="secondary-btn" type="button">タイトルに戻る</button>
     </section>
 
+    <!-- ==========================================
+         5. 【共通モジュール】国家試験過去問モード画面群
+         ========================================== -->
+    <!-- 5-1. 過去問スタート画面 -->
+    <section id="kokushiStartScreen" class="screen">
+      <div class="kokushi-hero-card">
+        <h2 class="kokushi-hero-title">🎓 国家試験過去問に挑戦（歩行）</h2>
+        <div class="kokushi-progress-row">
+          <span id="kokushiStartProgressText">クリア済 0 / 20問</span>
+          <span id="kokushiStartProgressPct">0%</span>
+        </div>
+        <div class="kokushi-progress-track">
+          <div id="kokushiStartProgressBar" class="kokushi-progress-fill" style="width:0%;"></div>
+        </div>
+      </div>
+
+      <div class="section-card" style="display:flex; flex-direction:column; gap:9px;">
+        <p class="section-title" style="margin-bottom:2px;">コースを選ぶ</p>
+        <button id="kokushiBtnRand5" class="kokushi-course-btn primary-course" type="button">
+          <div>
+            <span class="kokushi-course-main">⚡ ランダム5問（約3分）</span>
+            <span class="kokushi-course-sub">スキマ時間の国試チェックに最適</span>
+          </div>
+          <span>▶</span>
+        </button>
+
+        <button id="kokushiBtnRand10" class="kokushi-course-btn" type="button">
+          <div>
+            <span class="kokushi-course-main">📘 ランダム10問</span>
+            <span class="kokushi-course-sub">実力をしっかり確認したいときに</span>
+          </div>
+          <span>▶</span>
+        </button>
+
+        <button id="kokushiBtnAll" class="kokushi-course-btn" type="button">
+          <div>
+            <span class="kokushi-course-main">🏆 全20問チャレンジ</span>
+            <span class="kokushi-course-sub">収録している歩行の過去問を完全制覇</span>
+          </div>
+          <span>▶</span>
+        </button>
+
+        <button id="kokushiBtnWeak" class="kokushi-course-btn weak-course" type="button" disabled>
+          <div>
+            <span class="kokushi-course-main">🔥 間違えた問題だけ復習（<span id="kokushiWeakCount">0</span>問）</span>
+            <span class="kokushi-course-sub">正解すると自動で弱点リストから解除されます</span>
+          </div>
+          <span>▶</span>
+        </button>
+      </div>
+
+      <button id="kokushiBackToBaseBtn" class="secondary-btn" type="button">← 基礎学習に戻る</button>
+    </section>
+
+    <!-- 5-2. 過去問出題画面 -->
+    <section id="kokushiPlayScreen" class="screen">
+      <div class="kokushi-play-header">
+        <div class="kokushi-meta-group">
+          <span id="kokushiMetaBadge" class="kokushi-meta-badge">第58回 午前 問74</span>
+          <span id="kokushiMultiBadge" class="kokushi-multi-badge" style="display:none;">【2つ選べ】</span>
+        </div>
+        <span id="kokushiPlayProgress" style="color:var(--muted); font-variant-numeric:tabular-nums;">1 / 5</span>
+      </div>
+
+      <div class="kokushi-question-card">
+        <p id="kokushiQuestionText" class="kokushi-question-text"></p>
+        <!-- 図表付き問題（45-AM-74）のときのみ自動表示 -->
+        <div id="kokushiGraphWrap" class="kokushi-graph-wrap" style="display:none;"></div>
+      </div>
+
+      <div id="kokushiChoicesList" class="kokushi-choices-list"></div>
+
+      <!-- 判定後の解説カード -->
+      <div id="kokushiExplainCard" class="kokushi-explain-card">
+        <div id="kokushiJudgeTitle" class="kokushi-judge-title"></div>
+        <div id="kokushiPointBox" class="kokushi-point-box"></div>
+        <div id="kokushiNotesList" class="kokushi-notes-list"></div>
+        <button id="kokushiNextBtn" class="kokushi-next-btn" type="button">次の問題へ ▶</button>
+      </div>
+
+      <button id="kokushiQuitBtn" class="secondary-btn" type="button">過去問メニューに戻る</button>
+    </section>
+
+    <!-- 5-3. 過去問リザルト画面 -->
+    <section id="kokushiResultScreen" class="screen">
+      <div class="result-hero">
+        <div style="font-size:0.8rem; font-weight:700; color:var(--muted);">国試過去問 チャレンジ結果</div>
+        <div id="kokushiRankBadge" class="rank-badge S">S</div>
+        <div id="kokushiResultSub" style="font-size:0.84rem; font-weight:800;"></div>
+        <div class="stats-row">
+          <div>正答数<strong id="kokushiFinalScore">0 / 5問</strong></div>
+          <div>正答率<strong id="kokushiFinalRate">0%</strong></div>
+          <div>累計クリア<strong id="kokushiFinalCleared">0 / 20問</strong></div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <p id="kokushiMissTitle" class="section-title">今回間違えた問題</p>
+        <div id="kokushiMissList"></div>
+      </div>
+
+      <button id="kokushiResultWeakBtn" class="weak-btn" type="button" style="display:none;">
+        🔥 間違えた問題だけ復習（<span id="kokushiResultWeakCount">0</span>問）
+      </button>
+      <button id="kokushiRetryBtn" class="kokushi-next-btn" type="button">もう一度挑戦</button>
+      <button id="kokushiResultBackBtn" class="secondary-btn" type="button">← 基礎学習に戻る</button>
+    </section>
+
     <!-- フッター -->
     <footer>&copy;Created by Shunsuke Usui</footer>
   </div>
@@ -1386,11 +1927,9 @@
   <script>
     /**
      * =========================================================================
-     * 1. マスターデータ
+     * 1. 基礎学習マスターデータ（歩行8相・キーワード・異常歩行11種）
      * =========================================================================
      */
-
-    // 正常歩行 8相データ（パズル・マッチング・コマ送り図鑑で共用）
     const GAIT_PHASES = [
       {
         id: "gp1",
@@ -1411,7 +1950,6 @@
           { name: "大殿筋・ハムストリングス", type: "eccentric", label: "遠心性", role: "股関節のさらなる屈曲を抑え、体幹の前倒れを防ぐ", site: "glute" },
           { name: "大腿四頭筋", type: "isometric", label: "等尺性", role: "膝関節の伸展位を安定させる", site: "quad" }
         ],
-        // SVG描画用パラメータ（右脚＝観察側、左脚＝対側、角度は鉛直下向き0°・前方＋・後方−）
         pose: {
           hipY: 112,
           rHip: 28, rKnee: 4, rAnkle: 0,
@@ -1598,7 +2136,6 @@
       }
     ];
 
-    // 正常歩行 キーワード（全10問）
     const GAIT_KEYWORDS = [
       { id: "gk01", term: "歩幅（ステップ長）", meaning: "一方の踵接地から対側の踵接地までの距離", hint: "重複歩距離の約半分。片麻痺では非対称になりやすい。" },
       { id: "gk02", term: "重複歩距離（ストライド長）", meaning: "一方の踵接地から同側の次の踵接地までの距離", hint: "左＋右の2歩分（1歩行周期で進む距離）。" },
@@ -1612,7 +2149,6 @@
       { id: "gk10", term: "アンクルロッカー", meaning: "立脚中期（足関節を軸に下腿が前方へ傾く）", hint: "下腿三頭筋の遠心性収縮で下腿の前傾速度をコントロールする。" }
     ];
 
-    // 異常歩行（間欠性跛行を含む全11種）
     const ABNORMAL_GAITS = [
       { id: "ag01", name: "鶏歩（けいほ）", cause: "前脛骨筋麻痺（深腓骨神経麻痺）", feature: "つま先が垂れるため、膝を高く上げて歩く", hint: "下垂足（ドロップフット）を代償して、鶏のように足を大きく持ち上げる！" },
       { id: "ag02", name: "トレンデレンブルグ歩行", cause: "中殿筋の筋力低下（上殿神経麻痺など）", feature: "立脚期に「遊脚側（健側）の骨盤」が下に傾く", hint: "片脚立ちで骨盤を水平に保てない。体幹を患側に傾けて代償するのは「デュシェンヌ歩行」。" },
@@ -1741,25 +2277,22 @@
 
     /**
      * =========================================================================
-     * 3. アプリ状態管理
+     * 3. 基礎学習アプリ状態管理
      * =========================================================================
      */
-    let activeTab = "puzzle";       // "puzzle" | "normal" | "abnormal" | "atlas"
-    let puzzleDiff = "easy";        // "easy" | "hard"
-    let normalMode = "phases";      // "phases" | "keywords"
-    let abnormalMode = "cause";     // "cause" | "feature"
+    let activeTab = "puzzle";
+    let puzzleDiff = "easy";
+    let normalMode = "phases";
+    let abnormalMode = "cause";
     let lastSessionConfig = null;
 
-    // 共通タイマー
     let timerInterval = null;
     let startTime = 0;
     let elapsedSec = 0;
 
-    // コマ送り図鑑状態
     let atlasIndex = 0;
     let atlasAutoTimer = null;
 
-    // 8相パズル状態
     let puzzleState = {
       choices: [],
       slots: Array(8).fill(null),
@@ -1767,7 +2300,6 @@
       isLocked: false
     };
 
-    // マッチング状態
     let matchState = {
       category: "normal",
       subMode: "phases",
@@ -1822,6 +2354,11 @@
         stopAtlasAuto();
       }
 
+      // 国試バナーの進捗バッジを更新
+      if (typeof KokushiModule !== "undefined") {
+        KokushiModule.updateEntryBadge();
+      }
+
       document.getElementById("tabPuzzleBtn").classList.toggle("active", activeTab === "puzzle");
       document.getElementById("tabNormalBtn").classList.toggle("active", activeTab === "normal");
       document.getElementById("tabAbnormalBtn").classList.toggle("active", activeTab === "abnormal");
@@ -1834,12 +2371,10 @@
 
       const bests = getBestTimes();
 
-      // タブ1：ベストタイム
       const pBest = bests[`puzzle_${puzzleDiff}`];
       document.getElementById("puzzleBestRecord").textContent =
         typeof pBest === "number" ? `この難易度のベストタイム：${pBest.toFixed(1)}秒` : "まだクリア記録がありません";
 
-      // タブ2：弱点＆ベストタイム
       const normalWeakKey = normalMode === "phases"
         ? STORAGE_KEYS.WEAK_NORMAL_PHASES
         : STORAGE_KEYS.WEAK_NORMAL_KEYWORDS;
@@ -1860,7 +2395,6 @@
       document.getElementById("normalBestRecord").textContent =
         typeof nBest === "number" ? `このコースのベストタイム：${nBest.toFixed(1)}秒` : "まだクリア記録がありません";
 
-      // タブ3：弱点＆ベストタイム
       const abnormalValidIds = ABNORMAL_GAITS.map(x => x.id);
       const abnormalWeakIds = getWeakList(STORAGE_KEYS.WEAK_ABNORMAL).filter(id => abnormalValidIds.includes(id));
 
@@ -1876,7 +2410,6 @@
       document.getElementById("abnormalBestRecord").textContent =
         typeof aBest === "number" ? `このモードのベストタイム：${aBest.toFixed(1)}秒` : "まだクリア記録がありません";
 
-      // タブ4：図鑑描画
       if (activeTab === "atlas") {
         renderAtlas();
       }
@@ -1896,22 +2429,18 @@
       const shankLen = 42;
       const footLen = 20;
 
-      // 大腿（鉛直下向きを0°、前方へ＋）
       const tRad = degToRad(hipDeg);
       const kneeX = hipX + thighLen * Math.sin(tRad);
       const kneeY = hipY + thighLen * Math.cos(tRad);
 
-      // 下腿（膝屈曲は後方へ曲がるため hipDeg - kneeFlexDeg）
       const sRad = degToRad(hipDeg - kneeFlexDeg);
       const ankleX = kneeX + shankLen * Math.sin(sRad);
       const ankleY = kneeY + shankLen * Math.cos(sRad);
 
-      // 足部（下腿に対して前方90°が中間位。背屈＋、底屈−）
       const fRad = degToRad(hipDeg - kneeFlexDeg + 90 + ankleDorsiDeg);
       const toeX = ankleX + footLen * Math.sin(fRad);
       const toeY = ankleY + footLen * Math.cos(fRad);
 
-      // 踵側にも少し伸ばす
       const heelX = ankleX - 6 * Math.sin(fRad);
       const heelY = ankleY - 6 * Math.cos(fRad);
 
@@ -1919,7 +2448,6 @@
     }
 
     function getMuscleMarkerCoord(leg, site) {
-      // 観察側（右脚）の部位ごとの座標を算出
       const midThighX = (leg.hipX + leg.kneeX) / 2;
       const midThighY = (leg.hipY + leg.kneeY) / 2;
       const midShankX = (leg.kneeX + leg.ankleX) / 2;
@@ -1948,28 +2476,23 @@
       const hipX = 160;
       const hipY = p.hipY;
 
-      // 頭・体幹
       const shoulderX = hipX + 4;
       const shoulderY = hipY - 52;
       const headX = shoulderX + 2;
       const headY = shoulderY - 18;
 
-      // 右脚（観察側）と左脚（対側）
       const rLeg = calcLegPoints(hipX, hipY, p.rHip, p.rKnee, p.rAnkle);
       const lLeg = calcLegPoints(hipX, hipY, p.lHip, p.lKnee, p.lAnkle);
 
-      // 腕
       const armLen = 36;
       const rHandX = shoulderX + armLen * Math.sin(degToRad(p.rArm));
       const rHandY = shoulderY + armLen * Math.cos(degToRad(p.rArm));
       const lHandX = shoulderX + armLen * Math.sin(degToRad(p.lArm));
       const lHandY = shoulderY + armLen * Math.cos(degToRad(p.lArm));
 
-      // 重心（COM）：骨盤の少し上
       const comX = hipX + 2;
       const comY = hipY - 8;
 
-      // 筋活動ハイライトマーカー生成
       const markersSvg = phase.muscles.map(m => {
         const pt = getMuscleMarkerCoord(rLeg, m.site);
         const col = getContractionColor(m.type);
@@ -1986,54 +2509,42 @@
       const badgeBg = isStance ? "#eff6ff" : "#ecfdf5";
 
       svg.innerHTML = `
-        <!-- 進行方向ラベル -->
         <text x="296" y="22" text-anchor="end" font-size="10" font-weight="800" fill="#64748b">進行方向 ➔</text>
 
-        <!-- 左上フェーズバッジ -->
         <rect x="10" y="10" width="122" height="24" rx="12" fill="${badgeBg}" stroke="${badgeColor}" stroke-width="1" />
         <text x="71" y="26" text-anchor="middle" font-size="11" font-weight="900" fill="${badgeColor}">
           ${phase.order}. ${phase.abbr}（${phase.ratio}）
         </text>
 
-        <!-- 重心（COM）上下変動ガイドライン -->
         <line x1="20" y1="94" x2="300" y2="94" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.55" />
         <text x="24" y="90" font-size="8.5" font-weight="700" fill="#b45309">重心 最高(MSt)</text>
         <line x1="20" y1="110" x2="300" y2="110" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.55" />
         <text x="24" y="120" font-size="8.5" font-weight="700" fill="#b45309">重心 最低(LR/PSw)</text>
 
-        <!-- 床面 -->
         <line x1="16" y1="200" x2="304" y2="200" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
 
-        <!-- 対側（左腕・左脚：薄いグレー） -->
         <line x1="${shoulderX}" y1="${shoulderY}" x2="${lHandX.toFixed(1)}" y2="${lHandY.toFixed(1)}" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round" />
         <line x1="${lLeg.hipX}" y1="${lLeg.hipY}" x2="${lLeg.kneeX.toFixed(1)}" y2="${lLeg.kneeY.toFixed(1)}" stroke="#cbd5e1" stroke-width="6.5" stroke-linecap="round" />
         <line x1="${lLeg.kneeX.toFixed(1)}" y1="${lLeg.kneeY.toFixed(1)}" x2="${lLeg.ankleX.toFixed(1)}" y2="${lLeg.ankleY.toFixed(1)}" stroke="#cbd5e1" stroke-width="5.5" stroke-linecap="round" />
         <line x1="${lLeg.heelX.toFixed(1)}" y1="${lLeg.heelY.toFixed(1)}" x2="${lLeg.toeX.toFixed(1)}" y2="${lLeg.toeY.toFixed(1)}" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round" />
 
-        <!-- 体幹・頭 -->
         <line x1="${hipX}" y1="${hipY}" x2="${shoulderX}" y2="${shoulderY}" stroke="#334155" stroke-width="7.5" stroke-linecap="round" />
         <circle cx="${headX}" cy="${headY}" r="12" fill="#334155" />
 
-        <!-- 観察側（右脚：濃いネイビー太線） -->
         <line x1="${rLeg.hipX}" y1="${rLeg.hipY}" x2="${rLeg.kneeX.toFixed(1)}" y2="${rLeg.kneeY.toFixed(1)}" stroke="#1e293b" stroke-width="7.5" stroke-linecap="round" />
         <line x1="${rLeg.kneeX.toFixed(1)}" y1="${rLeg.kneeY.toFixed(1)}" x2="${rLeg.ankleX.toFixed(1)}" y2="${rLeg.ankleY.toFixed(1)}" stroke="#1e293b" stroke-width="6.5" stroke-linecap="round" />
         <line x1="${rLeg.heelX.toFixed(1)}" y1="${rLeg.heelY.toFixed(1)}" x2="${rLeg.toeX.toFixed(1)}" y2="${rLeg.toeY.toFixed(1)}" stroke="#1e293b" stroke-width="5.5" stroke-linecap="round" />
 
-        <!-- 関節ドット（股・膝・足） -->
         <circle cx="${rLeg.kneeX.toFixed(1)}" cy="${rLeg.kneeY.toFixed(1)}" r="3.5" fill="#ffffff" stroke="#1e293b" stroke-width="2" />
         <circle cx="${rLeg.ankleX.toFixed(1)}" cy="${rLeg.ankleY.toFixed(1)}" r="3" fill="#ffffff" stroke="#1e293b" stroke-width="2" />
 
-        <!-- 右腕 -->
         <line x1="${shoulderX}" y1="${shoulderY}" x2="${rHandX.toFixed(1)}" y2="${rHandY.toFixed(1)}" stroke="#475569" stroke-width="5" stroke-linecap="round" />
 
-        <!-- 重心（COM）マーカー -->
         <circle cx="${comX}" cy="${comY}" r="6.5" fill="#eab308" stroke="#854d0e" stroke-width="2" />
         <text x="${comX + 11}" y="${comY + 3}" font-size="8.5" font-weight="900" fill="#854d0e">COM</text>
 
-        <!-- 観察側（右脚）の筋活動ハイライトマーカー -->
         ${markersSvg}
 
-        <!-- 脚の色説明 -->
         <text x="160" y="214" text-anchor="middle" font-size="9.5" font-weight="700" fill="#64748b">
           ■ 濃紺：観察側（右脚） ／ ■ 薄灰：対側（左脚）
         </text>
@@ -2043,7 +2554,6 @@
     function renderAtlas() {
       const phase = GAIT_PHASES[atlasIndex];
 
-      // 1〜8ステップボタン描画
       const dotsEl = document.getElementById("atlasStepDots");
       dotsEl.innerHTML = "";
       GAIT_PHASES.forEach((p, idx) => {
@@ -2061,10 +2571,8 @@
         dotsEl.appendChild(btn);
       });
 
-      // SVG描画
       renderAtlasSvg(phase);
 
-      // 詳細カード描画
       const periodCls = phase.period === "立脚期" ? "stance" : "swing";
       const musclesHtml = phase.muscles.map(m => `
         <div class="muscle-row">
@@ -2654,7 +3162,7 @@
 
     /**
      * =========================================================================
-     * 8. 共通リザルト画面
+     * 8. 共通リザルト画面（基礎学習用）
      * =========================================================================
      */
     function renderResultScreen({
@@ -2687,7 +3195,810 @@
 
     /**
      * =========================================================================
-     * 9. イベント登録・初期化
+     * 9. 【共通モジュール】国家試験過去問に挑戦（KokushiModule）
+     *    他アプリへのコピペ横展開時は APP_ID と KOKUSHI_DATA を差し替えるだけで動作
+     * =========================================================================
+     */
+    const KOKUSHI_APP_ID = "gait";
+    const KOKUSHI_STORAGE_KEY = `ot_kokushi_${KOKUSHI_APP_ID}`;
+
+    const KOKUSHI_DATA = [
+      {
+        id: "58-AM-74",
+        meta: "第58回 午前 問74",
+        question: "正常歩行で遠心性収縮をする筋はどれか。2つ選べ。",
+        choices: [
+          "踵接地から足底接地までの前脛骨筋",
+          "足底接地から立脚中期までの下腿三頭筋",
+          "立脚中期から踵離地までの大殿筋",
+          "加速期から遊脚中期までの内側広筋",
+          "遊脚中期から減速期までの腸腰筋"
+        ],
+        answers: [1, 2],
+        point: "踵接地後の前脛骨筋と立脚中期の足関節背屈を制動する下腿三頭筋が遠心性収縮を行う。",
+        choiceNotes: [
+          "○ 踵接地後に遠心性収縮を行い、足関節の急速な底屈を制動する。",
+          "○ 脛骨の前傾（足関節背屈）を制御するため遠心性収縮を行う。",
+          "× 立脚中期から踵離地まで大殿筋は求心性収縮をする。",
+          "× 加速期から遊脚中期まで内側広筋は求心性収縮をする。",
+          "× 遊脚中期から減速期まで腸腰筋は求心性収縮をする。"
+        ]
+      },
+      {
+        id: "57-AM-74",
+        meta: "第57回 午前 問74",
+        question: "10m歩行において歩幅45cm、歩行率80歩/分を示す。このときの歩行速度(m/秒)はどれか。",
+        choices: ["0.4m/秒", "0.5m/秒", "0.6m/秒", "0.7m/秒", "0.8m/秒"],
+        answers: [3],
+        point: "歩行速度＝歩幅×歩行率。45cm×80歩/分＝3600cm/分＝36m/分＝0.6m/秒となる。",
+        choiceNotes: ["×", "×", "○ 0.45m × 80歩/分 ÷ 60秒 ＝ 0.6m/秒である。", "×", "×"]
+      },
+      {
+        id: "61-PM-74",
+        meta: "第61回 午後 問74",
+        question: "健常者の歩行で正しいのはどれか。",
+        choices: [
+          "高齢者では歩行比は大きくなる。",
+          "歩行周期で膝関節は1回屈曲する。",
+          "爪先離地時で股関節伸展は最大になる。",
+          "荷重応答期に体重心は足部の直上にある。",
+          "遊脚後期に遊脚側下肢の動きが減速する。"
+        ],
+        answers: [5],
+        point: "遊脚後期（減速期）にはハムストリングスが遠心性に働き、下肢の振出を減速させる。",
+        choiceNotes: [
+          "× 歩行比（歩幅/歩行率）は年齢とともに小さくなる。",
+          "× 歩行周期で膝関節は2回屈曲する（double knee action）。",
+          "× 股関節伸展は立脚終期（踵離地前後）で最大となる。",
+          "× 体重心が足部の直上にあるのは立脚中期である。",
+          "○ 膝関節屈筋群が遊脚側下肢の動きを減速させるために働く。"
+        ]
+      },
+      {
+        id: "53-AM-74",
+        meta: "第53回 午前 問74",
+        question: "正常歩行について正しいのはどれか。",
+        choices: [
+          "肩関節は同側の踵接地時に最大屈曲位となる。",
+          "膝関節は踵接地直後に伸展する。",
+          "骨盤は水平面において回旋運動をする。",
+          "骨盤は前額面において水平に保たれる。",
+          "骨盤は遊脚側へ側方移動する。"
+        ],
+        answers: [3],
+        point: "骨盤は水平面でおよそ8°回旋運動を行い、重心の前方移動を滑らかにする。",
+        choiceNotes: [
+          "× 対側の踵接地時に最大屈曲位となる。",
+          "× 踵接地直後に衝撃吸収のため軽度屈曲する。",
+          "○ 水平面において約8°の回旋運動を行う。",
+          "× 前額面において遊脚側の骨盤は約5°下方に傾斜する。",
+          "× 骨盤は立脚側（支持脚側）へ側方移動する。"
+        ]
+      },
+      {
+        id: "45-AM-74",
+        meta: "第45回 午前 問74",
+        question: "歩行中の矢状面上の関節運動を図に示す。この関節はどれか。",
+        choices: ["肩関節", "肘関節", "股関節", "膝関節", "足関節"],
+        answers: [5],
+        point: "着床初期〜荷重応答期の軽度底屈から背屈、立脚終期から前遊脚期への最大底屈という波形は足関節の特徴である。",
+        choiceNotes: [
+          "×",
+          "×",
+          "×",
+          "× 膝関節は荷重応答期と遊脚期に2峰性の大きな屈曲を示す。",
+          "○ 立脚初期の軽度底屈、立脚後期の背屈、前遊脚期の底屈運動パターンを示すのは足関節である。"
+        ]
+      },
+      {
+        id: "46-PM-74",
+        meta: "第46回 午後 問74",
+        question: "正常歩行で求心性収縮を示すのはどれか。2つ選べ。",
+        choices: [
+          "立脚初期の中殿筋",
+          "踵接地期の前脛骨筋",
+          "踵離地期の下腿三頭筋",
+          "つま先離地期の腸腰筋",
+          "踵接地期直前のハムストリングス"
+        ],
+        answers: [3, 4],
+        point: "踵離地期の蹴り出しを行う下腿三頭筋と、つま先離地期に下肢を前方に振り出す腸腰筋は求心性収縮をする。",
+        choiceNotes: [
+          "× 骨盤の対側下垂を防ぐため遠心性〜等尺性収縮を行う。",
+          "× 足部の急速な落下（底屈）を防ぐため遠心性収縮を示す。",
+          "○ 推進力を得るための足関節底屈（プッシュオフ）で求心性収縮を示す。",
+          "○ 下肢の前方への振り出し（股関節屈曲）のために求心性収縮を示す。",
+          "× 遊脚終期の膝関節伸展をブレーキングするために遠心性収縮を示す。"
+        ]
+      },
+      {
+        id: "41-PM-46",
+        meta: "第41回 午後 問46",
+        question: "正常平地歩行で正しいのはどれか。",
+        choices: [
+          "股関節は立脚中期に最も伸展する",
+          "膝関節は立脚中期に最も伸展する",
+          "膝関節は遊脚中期に最も屈曲する",
+          "足関節は踵接地時に最も底屈する",
+          "足関節は遊脚中期に最も背屈する"
+        ],
+        answers: [3],
+        point: "膝関節は遊脚中期に足部のクリアランスを確保するために約60°屈曲し最大となる。",
+        choiceNotes: [
+          "× 股関節は立脚後期（終期）に最も伸展する。",
+          "× 膝関節は立脚終期（heel off期）に最も伸展する。",
+          "○ 遊脚中期に足の引っ掛かりを防ぐため最大屈曲（約60°）する。",
+          "× 足関節はtoe off時（前遊脚期）に最も底屈する。",
+          "× 足関節は立脚終期（踵離地直前）に最も背屈する。"
+        ]
+      },
+      {
+        id: "50-AM-74",
+        meta: "第50回 午前 問74",
+        question: "正常歩行時の重心移動幅の減少への関与が小さいのはどれか。",
+        choices: [
+          "骨盤傾斜",
+          "二重膝作用",
+          "膝関節の回旋",
+          "骨盤の回旋運動",
+          "骨盤の側方移動"
+        ],
+        answers: [3],
+        point: "重心移動を滑らかにする6大決定因子に含まれないのは膝関節の回旋である。",
+        choiceNotes: [
+          "× 遊脚側の骨盤下垂（約5°）により重心の過度な上昇を防ぐ。",
+          "× 立脚初期と遊脚初期の屈曲により重心の上下動を平滑化する。",
+          "○ 膝関節の回旋は重心移動幅の減少への関与が小さい。",
+          "× 水平面での骨盤回旋により重心の落ち込み（高低差）を減少させる。",
+          "× 立脚期の股関節内転により重心の側方移動幅を抑制する。"
+        ]
+      },
+      {
+        id: "55-AM-72",
+        meta: "第55回 午前 問72",
+        question: "快適歩行から速度を速めた際の変化で正しいのはどれか。",
+        choices: [
+          "歩幅は減少する。",
+          "重心の上下動は減少する。",
+          "立脚相の時間は減少する。",
+          "股関節の屈曲角度は減少する。",
+          "体幹の水平面内回旋運動は減少する。"
+        ],
+        answers: [3],
+        point: "歩行速度の上昇に伴い、歩行周期全体に占める立脚相の時間・割合は減少する。",
+        choiceNotes: [
+          "× 歩幅は増大する。",
+          "× 重心の上下動は増加する。",
+          "○ 立脚相の時間および比率は減少する。",
+          "× 股関節の屈曲角度は増大する。",
+          "× 体幹の水平面内回旋運動は増加する。"
+        ]
+      },
+      {
+        id: "60-AM-95",
+        meta: "第60回 午前 問95",
+        question: "高齢者の歩行の特徴で正しいのはどれか。",
+        choices: [
+          "歩隔の減少",
+          "歩幅の減少",
+          "歩行率の増加",
+          "遊脚期の延長",
+          "両脚支持期の短縮"
+        ],
+        answers: [2],
+        point: "高齢者の歩行では安定性を確保するため、歩幅の減少、歩隔の拡大、両脚支持期の延長がみられる。",
+        choiceNotes: [
+          "× 安定性向上のため歩隔は拡大する。",
+          "○ 推進力やバランス能力の低下により歩幅は減少する。",
+          "× 歩行率（ケイデンス）は減少する。",
+          "× 片脚支持が不安定になるため遊脚期は短縮する。",
+          "× 安定性を保つため両脚支持期は延長する。"
+        ]
+      },
+      {
+        id: "59-AM-74",
+        meta: "第59回 午前 問74",
+        question: "健常成人の歩行で重心が最も高くなる時期はどれか。",
+        choices: ["初期接地", "荷重応答期", "立脚中期", "立脚終期", "前遊脚期"],
+        answers: [3],
+        point: "身体重心の垂直移動は立脚中期に最高となり、両脚支持期に最低となる。",
+        choiceNotes: [
+          "× 両脚支持期にあたり、重心は最も低くなる。",
+          "×",
+          "○ 単脚支持期の中央である立脚中期に重心は最も高くなる。",
+          "×",
+          "×"
+        ]
+      },
+      {
+        id: "44-PM-47",
+        meta: "第44回 午後 問47",
+        question: "歩行時に若年者よりも高齢者の方が大きいのはどれか。",
+        choices: [
+          "歩隔",
+          "歩幅",
+          "骨盤回旋",
+          "遊脚相/立脚相比",
+          "頭部の上下動の振幅"
+        ],
+        answers: [1],
+        point: "高齢者は支持基底面を広げて安定性を高めるため、若年者よりも歩隔を広くして歩行する。",
+        choiceNotes: [
+          "○ 支持基底面を広げて安定性を高めるため歩隔は増大する。",
+          "× 歩幅は若年者より減少する。",
+          "× 体幹・骨盤の可動性低下により回旋は減少する。",
+          "× 立脚相が延長し遊脚相が短縮するため比率は低下する。",
+          "× 重心の上下動は減少する。"
+        ]
+      },
+      {
+        id: "49-AM-74",
+        meta: "第49回 午前 問74",
+        question: "正常歩行時の矢状面における重心移動について正しいのはどれか。",
+        choices: [
+          "歩行速度が増すと重心軌道の高低差は小さくなる",
+          "1歩行周期において重心軌道は一峰性を示す",
+          "重心の移動速度は立脚中期で最も速くなる",
+          "重心が最も高くなるのは荷重反応期である",
+          "重心が最も低くなるのは踵接地期である"
+        ],
+        answers: [5],
+        point: "重心の垂直移動は踵接地期（両脚支持期）に最も低く、立脚中期に最も高くなる。",
+        choiceNotes: [
+          "× 歩行速度が増すと高低差は大きくなる。",
+          "× 1歩行周期で2回上下するため二峰性を示す。",
+          "× 重心の前方移動速度は立脚後期（プッシュオフ期）で最も速くなる。",
+          "× 重心が最も高くなるのは立脚中期である。",
+          "○ 踵接地期（両脚支持期）に重心位置は最も低くなる。"
+        ]
+      },
+      {
+        id: "42-PM-47",
+        meta: "第42回 午後 問47",
+        question: "正常歩行時の床反力で誤っているのはどれか。",
+        choices: [
+          "垂直分力は2峰性の波形を示す",
+          "垂直分力の最大値は体重を超える",
+          "左右分力は立脚中期には外向きに働く",
+          "前後分力は足底接地時には後ろ向きに働く",
+          "前後分力は踵離地時には前向きに働く"
+        ],
+        answers: [3],
+        point: "床反力の左右分力は、立脚初期のわずかな外向きを除き、立脚中期を含め大部分は内向きに作用する。",
+        choiceNotes: [
+          "○ 荷重応答期と立脚終期にピークをもつ2峰性を示す。",
+          "○ 加速度が加わるため最大値は体重の約110〜120%となる。",
+          "× 立脚中期には内向き（正中方向）に働く。",
+          "○ 制動力として後方（後ろ向き）に働く。",
+          "○ 推進力として前方（前向き）に働く。"
+        ]
+      },
+      {
+        id: "49-PM-73",
+        meta: "第49回 午後 問73",
+        question: "正常歩行の全歩行周期に渡って筋活動がみられるのはどれか。",
+        choices: ["下腿三頭筋", "大腿四頭筋", "ハムストリングス", "中殿筋", "脊柱起立筋"],
+        answers: [5],
+        point: "脊柱起立筋は歩行周期を通じて体幹の直立姿勢保持と動的安定性のため持続的に活動する。",
+        choiceNotes: [
+          "× 主に立脚中期〜終期に活動する。",
+          "× 主に初期接地〜荷重応答期および前遊脚期に活動する。",
+          "× 主に遊脚終期〜初期接地、荷重応答期に活動する。",
+          "× 主に初期接地〜立脚中期に活動する。",
+          "○ 体幹の安定性を保つため全歩行周期を通じて活動がみられる。"
+        ]
+      },
+      {
+        id: "60-AM-74",
+        meta: "第60回 午前 問74",
+        question: "正常歩行で正しいのはどれか。",
+        choices: [
+          "立脚相の後半は抑制期である。",
+          "重心は立脚中期で最も側方へ移動する。",
+          "前額面において遊脚側の骨盤は上方傾斜する。",
+          "歩行速度が速くなると遊脚相の比率は低下する。",
+          "遊脚相で下肢が体幹の後方にある時期を減速期という。"
+        ],
+        answers: [2],
+        point: "重心の側方移動は立脚中期に支持側へ最大偏位（約3cm）する。",
+        choiceNotes: [
+          "× 前半が減速・衝撃吸収を行う抑制期、後半は推進期である。",
+          "○ 立脚中期に支持脚側へ最も側方移動する。",
+          "× 前額面において遊脚側の骨盤は約5°下方に傾斜する。",
+          "× 歩行速度が速くなると立脚相比率が低下し遊脚相比率が増加する。",
+          "× 下肢が体幹の後方にある時期は加速期である。"
+        ]
+      },
+      {
+        id: "57-PM-74",
+        meta: "第57回 午後 問74",
+        question: "正常歩行について正しいのはどれか。",
+        choices: [
+          "足関節は1歩行周期に背屈と底屈とが2回生じる。",
+          "股関節は1歩行周期に伸展と屈曲とが2回生じる。",
+          "膝関節は1歩行周期に伸展と屈曲とが1回生じる。",
+          "一側下肢の立脚相と遊脚相の割合は7:3である。",
+          "高齢者では歩行比が大きくなる。"
+        ],
+        answers: [1],
+        point: "足関節は1歩行周期中に背屈と底屈を2回ずつ繰り返す（踵接地後の底屈・立脚中期の背屈・蹴り出しの底屈・遊脚期の背屈）。",
+        choiceNotes: [
+          "○ 1歩行周期中に背屈と底屈が2回生じる。",
+          "× 股関節の屈曲・伸展は1歩行周期に1回ずつ生じる。",
+          "× 膝関節は1歩行周期に2回屈曲・伸展する（二重膝作用）。",
+          "× 立脚相と遊脚相の割合はおよそ6:4（60%:40%）である。",
+          "× 高齢者では歩行比は小さくなる。"
+        ]
+      },
+      {
+        id: "41-PM-47",
+        meta: "第41回 午後 問47",
+        question: "歩行の遊脚相に働く筋で誤っているのはどれか。",
+        choices: ["腸腰筋", "ハムストリングス", "腓腹筋", "前脛骨筋", "脊柱起立筋"],
+        answers: [3],
+        point: "腓腹筋（下腿三頭筋）は立脚相（特に立脚中期から終期のプッシュオフ）に活動し、遊脚相には働かない。",
+        choiceNotes: [
+          "○ 遊脚初期に股関節屈曲のため活動する。",
+          "○ 遊脚終期に膝伸展を減速させるため活動する。",
+          "× 主に立脚後期（toe off時）の蹴り出しで活動し、遊脚相には働かない。",
+          "○ 足部クリアランス確保のため遊脚相全般で活動する。",
+          "○ 体幹の安定化のため全周期で持続的に活動する。"
+        ]
+      },
+      {
+        id: "43-PM-47",
+        meta: "第43回 午後 問47",
+        question: "歩行について正しいのはどれか。2つ選べ。",
+        choices: [
+          "重心点の高さは立脚中期に最大となる",
+          "歩行速度は重複歩時間に比例する",
+          "両脚支持期は1歩行周期に1回ある",
+          "歩行率は一般に男性が女性よりも高い",
+          "エネルギー効率は快適歩行速度で最もよい"
+        ],
+        answers: [1, 5],
+        point: "重心点の高さは立脚中期に最大となり、酸素消費などのエネルギー効率は快適歩行速度で最も優れている。",
+        choiceNotes: [
+          "○ 重心点の高さは立脚中期（単脚支持期）に最大となる。",
+          "× 重複歩時間が長くなると歩行速度は遅くなる（反比例）。",
+          "× 両脚支持期は1歩行周期に2回（計約20%）ある。",
+          "× 歩行率は一般に女性の方が高い。",
+          "○ 快適歩行速度において1mあたりのエネルギー消費量が最小となる。"
+        ]
+      },
+      {
+        id: "48-AM-74",
+        meta: "第48回 午前 問74",
+        question: "健常成人が歩行速度を上げた場合の変化で正しいのはどれか。2つ選べ。",
+        choices: [
+          "歩隔の拡大",
+          "歩行率の増加",
+          "重複歩距離の増加",
+          "両脚支持期の延長",
+          "重心の左右移動の増加"
+        ],
+        answers: [2, 3],
+        point: "歩行速度の上昇は歩幅（重複歩距離）の延長と歩行率（ケイデンス）の増加によって達成される。",
+        choiceNotes: [
+          "× 歩隔は速い歩行で狭小化（減少）する。",
+          "○ 単位時間あたりの歩数（歩行率）は増加する。",
+          "○ 1歩の歩幅および重複歩距離は増加する。",
+          "× 両脚支持期は短縮する。",
+          "× 重心の左右移動幅は減少し、上下動が増加する。"
+        ]
+      }
+    ];
+
+    /**
+     * 国家試験過去問モード制御モジュール
+     */
+    const KokushiModule = (() => {
+      let sessionQuestions = [];
+      let currentIdx = 0;
+      let selectedNums = new Set();
+      let isAnswered = false;
+      let correctCount = 0;
+      let sessionMissed = [];
+      let lastCourse = "rand5";
+
+      function loadRecord() {
+        try {
+          const raw = JSON.parse(localStorage.getItem(KOKUSHI_STORAGE_KEY) || "{}");
+          const validIds = new Set(KOKUSHI_DATA.map(q => q.id));
+          const clearedIds = Array.isArray(raw.clearedIds)
+            ? raw.clearedIds.filter(id => validIds.has(id))
+            : [];
+          const weakIds = Array.isArray(raw.weakIds)
+            ? raw.weakIds.filter(id => validIds.has(id))
+            : [];
+          return { clearedIds: [...new Set(clearedIds)], weakIds: [...new Set(weakIds)] };
+        } catch (e) {
+          return { clearedIds: [], weakIds: [] };
+        }
+      }
+
+      function saveRecord(rec) {
+        try {
+          localStorage.setItem(KOKUSHI_STORAGE_KEY, JSON.stringify({
+            clearedIds: [...new Set(rec.clearedIds)],
+            weakIds: [...new Set(rec.weakIds)]
+          }));
+        } catch (e) {}
+      }
+
+      function updateEntryBadge() {
+        const rec = loadRecord();
+        const el = document.getElementById("kokushiEntryBadge");
+        if (el) {
+          el.textContent = `クリア済 ${rec.clearedIds.length} / ${KOKUSHI_DATA.length}問`;
+        }
+      }
+
+      function openStartScreen() {
+        stopTimer();
+        stopAtlasAuto();
+        playSound("tap");
+
+        const rec = loadRecord();
+        const total = KOKUSHI_DATA.length;
+        const cleared = rec.clearedIds.length;
+        const pct = total > 0 ? Math.round((cleared / total) * 100) : 0;
+
+        document.getElementById("kokushiStartProgressText").textContent = `クリア済 ${cleared} / ${total}問`;
+        document.getElementById("kokushiStartProgressPct").textContent = `${pct}%`;
+        document.getElementById("kokushiStartProgressBar").style.width = `${pct}%`;
+
+        const weakCount = rec.weakIds.length;
+        document.getElementById("kokushiWeakCount").textContent = String(weakCount);
+        document.getElementById("kokushiBtnWeak").disabled = weakCount === 0;
+
+        showScreen("kokushiStartScreen");
+      }
+
+      function startSession(course) {
+        playSound("tap");
+        lastCourse = course;
+        const rec = loadRecord();
+
+        if (course === "weak") {
+          sessionQuestions = shuffle(KOKUSHI_DATA.filter(q => rec.weakIds.includes(q.id)));
+          if (sessionQuestions.length === 0) {
+            openStartScreen();
+            return;
+          }
+        } else if (course === "rand5") {
+          sessionQuestions = shuffle(KOKUSHI_DATA).slice(0, 5);
+        } else if (course === "rand10") {
+          sessionQuestions = shuffle(KOKUSHI_DATA).slice(0, 10);
+        } else {
+          sessionQuestions = shuffle(KOKUSHI_DATA);
+        }
+
+        currentIdx = 0;
+        correctCount = 0;
+        sessionMissed = [];
+
+        showScreen("kokushiPlayScreen");
+        renderQuestion();
+      }
+
+      /**
+       * 図表付き問題（id: 45-AM-74）専用のクリーンなSVG関節角度波形グラフを生成
+       * ※答えの「足関節」という文字列は図中に一切表示しない
+       */
+      function buildAnkleGraphSvg() {
+        return `
+          <svg viewBox="0 0 320 185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="歩行周期における矢状面上の関節運動波形">
+            <!-- 背景エリア（立脚期・遊脚期） -->
+            <rect x="48" y="26" width="150" height="128" fill="#eff6ff" opacity="0.55" />
+            <rect x="198" y="26" width="100" height="128" fill="#ecfdf5" opacity="0.55" />
+
+            <!-- 上部区分ラベル -->
+            <text x="123" y="18" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1d4ed8">立脚期 (0〜60%)</text>
+            <text x="248" y="18" text-anchor="middle" font-size="9.5" font-weight="800" fill="#047857">遊脚期 (60〜100%)</text>
+
+            <!-- 水平グリッド -->
+            <line x1="48" y1="60" x2="298" y2="60" stroke="#cbd5e1" stroke-width="0.8" stroke-dasharray="2,3" />
+            <line x1="48" y1="90" x2="298" y2="90" stroke="#64748b" stroke-width="1.2" />
+            <line x1="48" y1="120" x2="298" y2="120" stroke="#cbd5e1" stroke-width="0.8" stroke-dasharray="2,3" />
+            <line x1="48" y1="150" x2="298" y2="150" stroke="#cbd5e1" stroke-width="0.8" stroke-dasharray="2,3" />
+
+            <!-- 軸枠（縦軸・横軸） -->
+            <line x1="48" y1="26" x2="48" y2="154" stroke="#334155" stroke-width="1.5" />
+            <line x1="48" y1="154" x2="298" y2="154" stroke="#334155" stroke-width="1.5" />
+
+            <!-- 60%境界破線 -->
+            <line x1="198" y1="26" x2="198" y2="154" stroke="#dc2626" stroke-width="1.3" stroke-dasharray="4,3" />
+
+            <!-- 縦軸ラベル -->
+            <text x="43" y="36" text-anchor="end" font-size="9.5" font-weight="900" fill="#2563eb">＋</text>
+            <text x="43" y="47" text-anchor="end" font-size="7.5" font-weight="700" fill="#475569">屈曲</text>
+            <text x="43" y="56" text-anchor="end" font-size="7.5" font-weight="700" fill="#475569">背屈</text>
+
+            <text x="43" y="93" text-anchor="end" font-size="9.5" font-weight="800" fill="#334155">0°</text>
+
+            <text x="43" y="131" text-anchor="end" font-size="9.5" font-weight="900" fill="#dc2626">－</text>
+            <text x="43" y="142" text-anchor="end" font-size="7.5" font-weight="700" fill="#475569">伸展</text>
+            <text x="43" y="151" text-anchor="end" font-size="7.5" font-weight="700" fill="#475569">底屈</text>
+
+            <!-- 横軸目盛り -->
+            <text x="48" y="167" text-anchor="middle" font-size="8.5" font-weight="700" fill="#475569">0%</text>
+            <text x="98" y="167" text-anchor="middle" font-size="8.5" font-weight="700" fill="#475569">20%</text>
+            <text x="148" y="167" text-anchor="middle" font-size="8.5" font-weight="700" fill="#475569">40%</text>
+            <text x="198" y="167" text-anchor="middle" font-size="8.5" font-weight="900" fill="#dc2626">60%</text>
+            <text x="248" y="167" text-anchor="middle" font-size="8.5" font-weight="700" fill="#475569">80%</text>
+            <text x="298" y="167" text-anchor="middle" font-size="8.5" font-weight="700" fill="#475569">100%</text>
+            <text x="173" y="180" text-anchor="middle" font-size="9" font-weight="800" fill="#334155">歩行周期（%）</text>
+
+            <!-- 関節運動波形（0%:0° → 10%:-5° → 48%:+10° → 62%:-18° → 80〜100%:0°付近） -->
+            <path
+              d="M 48 90
+                 C 58 96, 65 105, 73 105
+                 C 82 105, 90 95, 102 88
+                 C 122 76, 148 60, 168 60
+                 C 182 60, 192 118, 203 144
+                 C 212 144, 224 102, 238 92
+                 C 252 84, 272 88, 298 90"
+              fill="none"
+              stroke="#1e293b"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+
+            <!-- 主要変曲点マーカー -->
+            <circle cx="73" cy="105" r="3" fill="#2563eb" />
+            <circle cx="168" cy="60" r="3" fill="#2563eb" />
+            <circle cx="203" cy="144" r="3" fill="#dc2626" />
+          </svg>
+        `;
+      }
+
+      function renderQuestion() {
+        const q = sessionQuestions[currentIdx];
+        const isMulti = q.answers.length > 1;
+
+        selectedNums = new Set();
+        isAnswered = false;
+
+        document.getElementById("kokushiMetaBadge").textContent = q.meta;
+        document.getElementById("kokushiMultiBadge").style.display = isMulti ? "inline-block" : "none";
+        document.getElementById("kokushiPlayProgress").textContent = `${currentIdx + 1} / ${sessionQuestions.length}`;
+        document.getElementById("kokushiQuestionText").textContent = q.question;
+
+        // 45-AM-74 のときのみSVGグラフを自動描画
+        const graphWrap = document.getElementById("kokushiGraphWrap");
+        if (q.id === "45-AM-74") {
+          graphWrap.innerHTML = buildAnkleGraphSvg();
+          graphWrap.style.display = "block";
+        } else {
+          graphWrap.innerHTML = "";
+          graphWrap.style.display = "none";
+        }
+
+        // 解説カードを閉じる
+        const expCard = document.getElementById("kokushiExplainCard");
+        expCard.className = "kokushi-explain-card";
+
+        renderChoices();
+      }
+
+      function renderChoices() {
+        const q = sessionQuestions[currentIdx];
+        const listEl = document.getElementById("kokushiChoicesList");
+        listEl.innerHTML = "";
+
+        q.choices.forEach((choiceText, idx) => {
+          const num = idx + 1;
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "kokushi-choice-btn";
+
+          if (!isAnswered) {
+            if (selectedNums.has(num)) btn.classList.add("selected");
+          } else {
+            btn.disabled = true;
+            const isAns = q.answers.includes(num);
+            const isSel = selectedNums.has(num);
+            if (isAns) {
+              btn.classList.add("is-correct");
+            } else if (isSel && !isAns) {
+              btn.classList.add("is-wrong");
+            }
+          }
+
+          btn.innerHTML = `
+            <span class="kokushi-choice-num">${num}</span>
+            <span>${choiceText}</span>
+          `;
+
+          btn.onclick = () => onTapChoice(num);
+          listEl.appendChild(btn);
+        });
+      }
+
+      function onTapChoice(num) {
+        if (isAnswered) return;
+        const q = sessionQuestions[currentIdx];
+        const required = q.answers.length;
+
+        if (required === 1) {
+          selectedNums.add(num);
+          judgeCurrentQuestion();
+        } else {
+          if (selectedNums.has(num)) {
+            playSound("tap");
+            selectedNums.delete(num);
+            renderChoices();
+          } else {
+            selectedNums.add(num);
+            if (selectedNums.size >= required) {
+              judgeCurrentQuestion();
+            } else {
+              playSound("tap");
+              renderChoices();
+            }
+          }
+        }
+      }
+
+      function judgeCurrentQuestion() {
+        isAnswered = true;
+        const q = sessionQuestions[currentIdx];
+        const sortedSel = [...selectedNums].sort((a, b) => a - b);
+        const sortedAns = [...q.answers].sort((a, b) => a - b);
+
+        const isCorrect =
+          sortedSel.length === sortedAns.length &&
+          sortedSel.every((v, i) => v === sortedAns[i]);
+
+        // localStorage記録更新
+        const rec = loadRecord();
+        if (isCorrect) {
+          playSound("ok");
+          correctCount++;
+          if (!rec.clearedIds.includes(q.id)) rec.clearedIds.push(q.id);
+          rec.weakIds = rec.weakIds.filter(id => id !== q.id);
+        } else {
+          playSound("ng");
+          sessionMissed.push(q);
+          if (!rec.weakIds.includes(q.id)) rec.weakIds.push(q.id);
+        }
+        saveRecord(rec);
+        updateEntryBadge();
+
+        renderChoices();
+
+        // 解説カード表示
+        const expCard = document.getElementById("kokushiExplainCard");
+        expCard.className = `kokushi-explain-card open ${isCorrect ? "ok" : "ng"}`;
+
+        const judgeTitle = document.getElementById("kokushiJudgeTitle");
+        judgeTitle.className = `kokushi-judge-title ${isCorrect ? "ok" : "ng"}`;
+        judgeTitle.innerHTML = `
+          <span>${isCorrect ? "⭕ 正解！" : "❌ 不正解…"}</span>
+          <span style="font-size:0.84rem;">正解：${sortedAns.join("・")}</span>
+        `;
+
+        document.getElementById("kokushiPointBox").innerHTML =
+          `<strong>💡 要点解説：</strong>${q.point}`;
+
+        const notesEl = document.getElementById("kokushiNotesList");
+        notesEl.innerHTML = q.choices.map((cText, i) => {
+          const num = i + 1;
+          const isAns = q.answers.includes(num);
+          const note = (q.choiceNotes && q.choiceNotes[i]) ? q.choiceNotes[i] : (isAns ? "○ 正解" : "×");
+          return `
+            <div class="kokushi-note-row ${isAns ? "ans-row" : ""}">
+              <span class="kokushi-note-num">${num}.</span>
+              <span>${note}</span>
+            </div>
+          `;
+        }).join("");
+
+        const nextBtn = document.getElementById("kokushiNextBtn");
+        nextBtn.textContent = (currentIdx + 1 < sessionQuestions.length)
+          ? "次の問題へ ▶"
+          : "結果を見る ▶";
+      }
+
+      function nextQuestion() {
+        playSound("tap");
+        currentIdx++;
+        if (currentIdx >= sessionQuestions.length) {
+          finishSession();
+        } else {
+          renderQuestion();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+
+      function finishSession() {
+        playSound("clear");
+        const total = sessionQuestions.length;
+        const rate = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+        let rank = "B";
+        let subText = "間違えた問題の解説を見直して、弱点復習でリベンジしよう！";
+        if (rate >= 90) {
+          rank = "S";
+          subText = "素晴らしい！国家試験の歩行領域は合格圏内バッチリです！";
+        } else if (rate >= 70) {
+          rank = "A";
+          subText = "あと少し！間違えた問題を潰せば完璧に仕上がります！";
+        }
+
+        const rec = loadRecord();
+        const rankEl = document.getElementById("kokushiRankBadge");
+        rankEl.textContent = rank;
+        rankEl.className = `rank-badge ${rank}`;
+
+        document.getElementById("kokushiResultSub").textContent = subText;
+        document.getElementById("kokushiFinalScore").textContent = `${correctCount} / ${total}問`;
+        document.getElementById("kokushiFinalRate").textContent = `${rate}%`;
+        document.getElementById("kokushiFinalCleared").textContent = `${rec.clearedIds.length} / ${KOKUSHI_DATA.length}問`;
+
+        const missTitle = document.getElementById("kokushiMissTitle");
+        const missListEl = document.getElementById("kokushiMissList");
+
+        if (sessionMissed.length > 0) {
+          missTitle.textContent = `今回間違えた問題（${sessionMissed.length}問・弱点リストに登録済み）`;
+          missListEl.innerHTML = sessionMissed.map(q => `
+            <div class="kokushi-miss-item">
+              <div class="kokushi-miss-meta">${q.meta}（正解：${q.answers.join("・")}）</div>
+              <div class="kokushi-miss-q">${q.question}</div>
+              <div style="color:var(--muted);">💡 ${q.point}</div>
+            </div>
+          `).join("");
+        } else {
+          missTitle.textContent = "今回の結果";
+          missListEl.innerHTML = `<div class="perfect-box">🎉 全問正解パーフェクト！この調子で全20問制覇を目指そう！</div>`;
+        }
+
+        const weakBtn = document.getElementById("kokushiResultWeakBtn");
+        if (rec.weakIds.length > 0) {
+          weakBtn.style.display = "block";
+          document.getElementById("kokushiResultWeakCount").textContent = String(rec.weakIds.length);
+        } else {
+          weakBtn.style.display = "none";
+        }
+
+        showScreen("kokushiResultScreen");
+      }
+
+      function bindEvents() {
+        document.getElementById("kokushiEntryBtn").onclick = openStartScreen;
+        document.getElementById("kokushiBtnRand5").onclick = () => startSession("rand5");
+        document.getElementById("kokushiBtnRand10").onclick = () => startSession("rand10");
+        document.getElementById("kokushiBtnAll").onclick = () => startSession("all");
+        document.getElementById("kokushiBtnWeak").onclick = () => startSession("weak");
+        document.getElementById("kokushiNextBtn").onclick = nextQuestion;
+        document.getElementById("kokushiQuitBtn").onclick = openStartScreen;
+
+        document.getElementById("kokushiResultWeakBtn").onclick = () => startSession("weak");
+        document.getElementById("kokushiRetryBtn").onclick = () => {
+          if (lastCourse === "weak" && loadRecord().weakIds.length === 0) {
+            openStartScreen();
+          } else {
+            startSession(lastCourse);
+          }
+        };
+
+        const backToBase = () => {
+          playSound("tap");
+          renderStartScreen();
+          showScreen("startScreen");
+        };
+        document.getElementById("kokushiBackToBaseBtn").onclick = backToBase;
+        document.getElementById("kokushiResultBackBtn").onclick = backToBase;
+      }
+
+      return { init: bindEvents, updateEntryBadge };
+    })();
+
+    /**
+     * =========================================================================
+     * 10. イベント登録・初期化
      * =========================================================================
      */
     document.getElementById("soundToggle").onclick = (e) => {
@@ -2765,7 +4076,7 @@
       }
     };
 
-    // 各スタートボタン
+    // 基礎学習スタートボタン
     document.getElementById("startPuzzleBtn").onclick = () => startPuzzleGame();
     document.getElementById("startNormalBtn").onclick = () => startMatchGame("normal", normalMode, false);
     document.getElementById("weakNormalBtn").onclick = () => startMatchGame("normal", normalMode, true);
@@ -2836,7 +4147,8 @@
       showScreen("startScreen");
     };
 
-    // 初期描画
+    // 初期化
+    KokushiModule.init();
     renderStartScreen();
   </script>
 </body>
